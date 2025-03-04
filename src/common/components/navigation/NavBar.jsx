@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import logo from 'assets/cae_logo.png';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -13,6 +14,7 @@ const StyledNav = styled.nav`
   gap: 10px;
   padding: 10px 20px;
   font-size: 20px;
+  background-color: #e95d0c;
 `;
 
 const LeftAligned = styled.div`
@@ -26,6 +28,28 @@ const LogoPlaceholder = styled(Button.Invisible)`
   font-size: 1.7rem;
   font-weight: bold;
   font-family: monospace;
+`;
+
+const Form = styled(Button.Invisible)`
+  padding: 0;
+  font-size: 1.7rem;
+  font-weight: bold;
+  font-family: monospace;
+  margin-right: 20px;
+`;
+const Scoreboard = styled(Button.Invisible)`
+  padding: 0;
+  font-size: 1.7rem;
+  font-weight: bold;
+  font-family: monospace;
+  margin-right: 20px;
+`;
+const Data = styled(Button.Invisible)`
+  padding: 0;
+  font-size: 1.7rem;
+  font-weight: bold;
+  font-family: monospace;
+  margin-right: 20px;
 `;
 
 export default function NavBar() {
@@ -54,8 +78,14 @@ export default function NavBar() {
   return (
     <StyledNav>
       <LeftAligned>
-        <LogoPlaceholder onClick={() => navigate('/')}>[LOGO]</LogoPlaceholder>
+        <LogoPlaceholder onClick={() => navigate('/')}>
+          <img src={logo} />
+        </LogoPlaceholder>
       </LeftAligned>
+      <Form onClick={() => navigate('/form')}>Form</Form>
+      <Scoreboard onClick={() => navigate('/form')}>data</Scoreboard>
+      <Data onClick={() => navigate('/form')}>Scoreboard</Data>
+
       {user ? (
         <Button.Secondary onClick={handleLogoutClick}>Log Out</Button.Secondary>
       ) : (
