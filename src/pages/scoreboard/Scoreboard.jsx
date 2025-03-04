@@ -1,9 +1,5 @@
 /* Scoreboard Page */
 
 function Header() {
-  return (
-      <header>
-          {/* Content of the header will go here */}
-      </header>
-  );
+  return <header>{/* Content of the header will go here */}</header>;
 }
