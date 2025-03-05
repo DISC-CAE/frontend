@@ -11,6 +11,7 @@ function Form() {
   };
 
   return (
+    <div id='form-bg'>
     <div className='Form--container'>
       <form onSubmit={handleSubmit}>
         <input name='event_name' placeholder='Event Name' required />
@@ -21,6 +22,7 @@ function Form() {
       </form>
 
       <EventsList />
+    </div>
     </div>
   );
 }

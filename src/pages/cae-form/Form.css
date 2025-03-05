@@ -12,6 +12,13 @@
   background-color: #f4f4f4;
 }
 
+#form-id{
+  height: 40%;
+  width: 60%;
+  border-radius: 10px;
+  background-color: #E95D0C;
+}
+
 form {
   background: #ffffff;
   padding: 2rem;
