@@ -84,7 +84,7 @@ export default function NavBar() {
       </LeftAligned>
       <Form onClick={() => navigate('/form')}>Form</Form>
       <Scoreboard onClick={() => navigate('/form')}>data</Scoreboard>
-      <Data onClick={() => navigate('/form')}>Scoreboard</Data>
+      <Data onClick={() => navigate('/scoreboard')}>Scoreboard</Data>
 
       {user ? (
         <Button.Secondary onClick={handleLogoutClick}>Log Out</Button.Secondary>
