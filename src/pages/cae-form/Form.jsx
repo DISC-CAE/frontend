@@ -1,5 +1,7 @@
 import React from 'react';
 
+import EventsList from 'common/components/caeEvents/EventList';
+
 import './Form.css';
 
 function Form() {
@@ -17,6 +19,8 @@ function Form() {
         <textarea name='event_description' placeholder='Description' required />
         <button type='submit'>Add Event</button>
       </form>
+
+      <EventsList />
     </div>
   );
 }
