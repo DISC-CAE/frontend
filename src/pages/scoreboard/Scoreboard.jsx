@@ -1,5 +1,13 @@
 /* Scoreboard Page */
+import React from 'react';
 
-function Header() {
-  return <header>{/* Content of the header will go here */}</header>;
+
+function Scoreboard() {
+  return (
+    <div>
+      <h1>Scoreboard</h1>
+    </div>
+    );
 }
+
+export default Scoreboard;

@@ -13,8 +13,10 @@ import Login from 'pages/account/Login';
 import RequestPasswordReset from 'pages/account/RequestPasswordReset';
 import ResetPassword from 'pages/account/ResetPassword';
 import SignUp from 'pages/account/SignUp';
+import Form from 'pages/cae-form/Form';
 import Home from 'pages/home/Home';
 import NotFound from 'pages/not-found/NotFound';
+import Scoreboard from 'pages/scoreboard/Scoreboard';
 
 import './App.css';
 
@@ -26,10 +28,13 @@ export default function App() {
           <Route path='/' element={<NavLayout />}>
             <Route element={<PrivateRoute />}>
               <Route index element={<Home />} />
+              <Route path='form' element={<Form />} />
+              <Route path='scoreboard' element={<Scoreboard />} />
             </Route>
             <Route element={<PublicOnlyRoute />}>
               <Route path='login' element={<Login />} />
               <Route path='signup' element={<SignUp />} />
+
               <Route
                 path='forgot-password'
                 element={<RequestPasswordReset />}
