@@ -12,10 +12,12 @@ function Form() {
 
   return (
     <div id='form-bg'>
-      <p>Submit Your Own Climate Contributions</p>
+      
     <div className='Form--container'>
+      <p>Submit Your Own Climate Contributions</p>
+      
       <form onSubmit={handleSubmit}>
-        <div className='form-group'>
+        <div className='form-col'>
           <p>Organization name</p>
             <input name='organization_name' placeholder='Organization Name' required />
 
@@ -32,16 +34,16 @@ function Form() {
             <input name='initiativee_description' placeholder='Initiative 3 description' required />
         </div>
 
-        <div className='form-group'>
+        <div className='form-col'>
+          <p>Date</p>
           <input type='date' name='event_date' required />
           <input name='event_location' placeholder='Location' required />
           <textarea name='event_description' placeholder='Description' required />
         </div>
-        
-        <button type='submit'>Add Event</button>
       </form>
 
-      <EventsList />
+      <button type='submit'>Submit</button>
+      {/* <EventsList /> */}
     </div>
     </div>
   );

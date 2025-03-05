@@ -6,38 +6,36 @@
 /* Form.css */
 .Form--container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* height: 100vh; */
+  margin: auto;
+  gap: 2rem;
   background-color: #f4f4f4;
 }
 
-/* #form-bg{
+.form-col{
   display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 30px;
-  height: 60%;
-  width: 50%;
-  padding: 2rem;
-  background-color: #E95D0C;
-  margin: auto;
-} */
+  flex-direction: column;
+  width: 50%
+}
 
 #form-bg{
   display: flex;
   align-items: center;
   background-color: #EEF0E4;
 }
+
 form {
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px;
+  max-width: 85%;
+  max-height: 90%;
   display: flex;
-  flex-direction: row;
-  gap: 1rem;
+  /* flex-direction: column; */
+  gap: 10rem;
 }
 
 input,
