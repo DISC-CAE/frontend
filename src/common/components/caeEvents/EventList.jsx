@@ -17,7 +17,7 @@ const App = () => {
   // Fetch events from backend
   const fetchEvents = async () => {
     try {
-      const response = await fetch('http://localhost:5050/fetch-events');
+      const response = await fetch('http://localhost:5050/cae/fetch-events');
       const data = await response.json(); // Ensure JSON parsing
       if (Array.isArray(data)) {
         setEvents(data); // Set state only if it's an array
