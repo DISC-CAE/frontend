@@ -1,0 +1,46 @@
+/* sidebar */
+.sidebar-container {
+  width: 250px;
+  color: white;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.sidebar-list {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-item {
+  display: flex;
+  gap: 12px;
+  padding: 15px;
+  text-decoration: none;
+  color: white;
+  font-size: 1.2rem;
+  border-radius: 6px;
+  transition: background 0.2s;
+  background: black;
+  margin-bottom: 10px;
+}
+
+.sidebar-item:hover {
+  background: #E95D0C;
+}
+
+/* scoreboard */
+.scoreboard-container {
+  display: flex;
+}
+
+.scoreboard-page {
+  flex: 1;
+  padding: 20px;
+  text-align: center;
+  padding-top: 15px;
+}
+
+h2 {
+  text-decoration: underline;
+  font-size: 1.7rem;
+}
