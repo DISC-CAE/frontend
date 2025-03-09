@@ -5,11 +5,11 @@ import './Scoreboard.css';
 
 /* Navigation Sidebar */
 const menuItems = [
-  { name: 'Beyond Waste', href: '#' }, /* '# is placeholder for the href */,
-  { name: 'Edible Evanston', href: '#' },
-  { name: 'Energy', href: '#' },
-  { name: 'Environmental Justice', href: '#' },
-  { name: 'Natural Habitat', href: '#' },
+  { name: 'BEYOND WASTE', href: '#' }, /* '# is placeholder for the href */
+  { name: 'EDIBLE EVANSTON', href: '#' },
+  { name: 'ENERGY', href: '#' },
+  { name: 'ENVIRONMENTAL JUSTICE', href: '#' },
+  { name: 'NATURAL HABITAT', href: '#' },
 ];
 
 const Sidebar = () => {
@@ -31,14 +31,14 @@ const Sidebar = () => {
 /* Initiatives grid */
 const Initiatives = [
   { title: 'Food Sharing Program' },
-  { title: 'Food Sharing Program' },
-  { title: 'Food Sharing Program' },
-  { title: 'Food Sharing Program' },
-  { title: 'Food Sharing Program' },
-  { title: 'Food Sharing Program' },
-  { title: 'Food Sharing Program' },
-  { title: 'Food Sharing Program' },
-  { title: 'Food Sharing Program' },
+  { title:  ''},
+  { title:  ''},
+  { title:  ''},
+  { title:  ''},
+  { title:  ''},
+  { title:  ''},
+  { title:  ''},
+  { title:  ''},
 ];
 
 const InitiativesGrid = () => {
@@ -62,6 +62,7 @@ const ScoreboardHeader = () => {
     <div className='scoreboard-header'>
       <h1 className='barlow-semibold'>COMMUNITY SCOREBOARD</h1>
       <p className='barlow-semibold'>Learn More about Evanston's Climate Wins!</p>
+      <hr className="divider" />
       <h2 className='barlow-semibold'>Edible Evanston</h2> 
       {/* temporarily hardcoded, todo: make adaptable to sidebar */}
     </div>
