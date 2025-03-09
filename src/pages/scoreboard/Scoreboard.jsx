@@ -1,25 +1,31 @@
-/* Scoreboard Page */
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import "./Scoreboard.css";
 
-import './Scoreboard.css';
+/* Map Display Names to API Query Parameters */
+const entityQueryMap = {
+  "BEYOND WASTE": "beyond_waste",
+  "EDIBLE EVANSTON": "edible_evanston",
+  "ENERGY": "energy",
+  "ENVIRONMENTAL JUSTICE": "environment_justice",
+  "NATURAL HABITAT": "natural_habitat",
+  "CLIMATE ACTION": "climate_action",
+};
 
 /* Navigation Sidebar */
-const menuItems = [
-  { name: 'BEYOND WASTE', href: '#' }, /* '# is placeholder for the href */
-  { name: 'EDIBLE EVANSTON', href: '#' },
-  { name: 'ENERGY', href: '#' },
-  { name: 'ENVIRONMENTAL JUSTICE', href: '#' },
-  { name: 'NATURAL HABITAT', href: '#' },
-];
-
-const Sidebar = () => {
+const Sidebar = ({ fetchInitiatives, setCurrentEntity }) => {
   return (
-    <aside className='sidebar-container'>
-      <ul className='sidebar-list'>
-        {menuItems.map((item, index) => (
+    <aside className="sidebar-container">
+      <ul className="sidebar-list">
+        {Object.keys(entityQueryMap).map((name, index) => (
           <li key={index}>
-            <a href={item.href} className='sidebar-item barlow-semibold'>
-              {item.name}
+            <a
+              className="sidebar-item barlow-semibold"
+              onClick={() => {
+                setCurrentEntity(name); // Update header
+                fetchInitiatives(entityQueryMap[name]); // Fetch new data
+              }}
+            >
+              {name}
             </a>
           </li>
         ))}
@@ -28,54 +34,65 @@ const Sidebar = () => {
   );
 };
 
-/* Initiatives grid */
-const Initiatives = [
-  { title: 'Food Sharing Program' },
-  { title:  ''},
-  { title:  ''},
-  { title:  ''},
-  { title:  ''},
-  { title:  ''},
-  { title:  ''},
-  { title:  ''},
-  { title:  ''},
-];
-
-const InitiativesGrid = () => {
+/* Initiatives Grid */
+const InitiativesGrid = ({ initiatives }) => {
   return (
-    <div className='grid-container'>
-      {Initiatives.map((program, index) => (
-        <div key={index} className='card'>
-          <div className='card-header barlow-semibold'>{program.title}</div>
-          <div className='card-content'>
-            {/* todo: update with card content */}
+    <div className="grid-container">
+      {initiatives.length > 0 ? (
+        initiatives.map((program, index) => (
+          <div key={index} className="card">
+            <div className="card-header barlow-semibold">{program.name}</div>
+            <div className="card-content">{program.description}</div>
           </div>
-        </div>
-      ))}
+        ))
+      ) : (
+        <p>No initiatives available.</p>
+      )}
     </div>
   );
 };
 
-/* Scoreboard */
-const ScoreboardHeader = () => {
+/* Scoreboard Header */
+const ScoreboardHeader = ({ currentEntity }) => {
   return (
-    <div className='scoreboard-header'>
-      <h1 className='barlow-semibold'>COMMUNITY SCOREBOARD</h1>
-      <p className='barlow-semibold'>Learn More about Evanston's Climate Wins!</p>
+    <div className="scoreboard-header">
+      <h1 className="barlow-semibold">COMMUNITY SCOREBOARD</h1>
+      <p className="barlow-semibold">Learn More about Evanston's Climate Wins!</p>
       <hr className="divider" />
-      <h2 className='barlow-semibold'>Edible Evanston</h2> 
-      {/* temporarily hardcoded, todo: make adaptable to sidebar */}
+      <h2 className="barlow-semibold">{currentEntity}</h2>
     </div>
   );
-}
+};
 
+/* Scoreboard Component */
 function Scoreboard() {
+  const [initiatives, setInitiatives] = useState([]);
+  const [currentEntity, setCurrentEntity] = useState("EDIBLE EVANSTON"); // Default entity
+
+  useEffect(() => {
+    fetchInitiatives(entityQueryMap[currentEntity]);
+  }, []);
+
+  const fetchInitiatives = async (entityParam) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5050/cae/fetch-scoreboard?entity=${encodeURIComponent(entityParam)}`
+      );
+      if (!response.ok) throw new Error("Failed to fetch");
+      const data = await response.json();
+      setInitiatives(data || []);
+    } catch (error) {
+      console.error("Error fetching initiatives:", entityParam, error);
+      setInitiatives([]);
+    }
+  };
+
   return (
-    <div className='scoreboard-page'>
-      <ScoreboardHeader />
-      <div className='scoreboard-container'>
-        <Sidebar /> 
-        <InitiativesGrid />
+    <div className="scoreboard-page">
+      <ScoreboardHeader currentEntity={currentEntity} />
+      <div className="scoreboard-container">
+        <Sidebar fetchInitiatives={fetchInitiatives} setCurrentEntity={setCurrentEntity} />
+        <InitiativesGrid initiatives={initiatives} />
       </div>
     </div>
   );

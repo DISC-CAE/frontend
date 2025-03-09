@@ -83,8 +83,7 @@ export default function NavBar() {
         </LogoPlaceholder>
       </LeftAligned>
       <Form onClick={() => navigate('/form')}>Form</Form>
-      <Scoreboard onClick={() => navigate('/form')}>data</Scoreboard>
-      <Data onClick={() => navigate('/scoreboard')}>Scoreboard</Data>
+      <Scoreboard onClick={() => navigate('/scoreboard')}>Scoreboard</Scoreboard>
 
       {user ? (
         <Button.Secondary onClick={handleLogoutClick}>Log Out</Button.Secondary>
