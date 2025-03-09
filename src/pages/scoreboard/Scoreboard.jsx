@@ -18,7 +18,7 @@ const Sidebar = () => {
       <ul className='sidebar-list'>
         {menuItems.map((item, index) => (
           <li key={index}>
-            <a href={item.href} className='sidebar-item'>
+            <a href={item.href} className='sidebar-item barlow-semibold'>
               {item.name}
             </a>
           </li>
@@ -28,13 +28,42 @@ const Sidebar = () => {
   );
 };
 
+/* Initiatives grid */
+const Initiatives = [
+  { title: 'Food Sharing Program' },
+  { title: 'Food Sharing Program' },
+  { title: 'Food Sharing Program' },
+  { title: 'Food Sharing Program' },
+  { title: 'Food Sharing Program' },
+  { title: 'Food Sharing Program' },
+  { title: 'Food Sharing Program' },
+  { title: 'Food Sharing Program' },
+  { title: 'Food Sharing Program' },
+];
+
+const InitiativesGrid = () => {
+  return (
+    <div className='grid-container'>
+      {Initiatives.map((program, index) => (
+        <div key={index} className='card'>
+          <div className='card-header barlow-semibold'>{program.title}</div>
+          <div className='card-content'>
+            {/* todo: update with card content */}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 /* Scoreboard */
-const Scoreboardheader = () => {
+const ScoreboardHeader = () => {
   return (
     <div className='scoreboard-header'>
-      <h1>Community Scoreboard</h1>
-      <p>Learn More about Evanston's Climate Wins!</p>
-      <h2>Edible Evanston</h2> {/* temporarily hardcoded, make adaptable to sidebar */}
+      <h1 className='barlow-semibold'>COMMUNITY SCOREBOARD</h1>
+      <p className='barlow-semibold'>Learn More about Evanston's Climate Wins!</p>
+      <h2 className='barlow-semibold'>Edible Evanston</h2> 
+      {/* temporarily hardcoded, todo: make adaptable to sidebar */}
     </div>
   );
 }
@@ -42,9 +71,10 @@ const Scoreboardheader = () => {
 function Scoreboard() {
   return (
     <div className='scoreboard-page'>
-      <Scoreboardheader />
+      <ScoreboardHeader />
       <div className='scoreboard-container'>
         <Sidebar /> 
+        <InitiativesGrid />
       </div>
     </div>
   );

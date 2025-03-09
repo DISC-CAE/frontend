@@ -1,9 +1,13 @@
+/* entire page */
+body {
+  background: #EEF0E4;
+}
+
 /* sidebar */
 .sidebar-container {
   width: 250px;
-  color: white;
   min-height: 100vh;
-  padding: 20px;
+  padding: 30px;
 }
 
 .sidebar-list {
@@ -14,7 +18,7 @@
 .sidebar-item {
   display: flex;
   gap: 12px;
-  padding: 15px;
+  padding: 18px;
   text-decoration: none;
   color: white;
   font-size: 1.2rem;
@@ -28,9 +32,45 @@
   background: #E95D0C;
 }
 
+/* initatives grid */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px 15px;
+  flex-grow: 1;
+  padding: 20px;
+  /* todo: fix gapping between cards (when < 6 cards) */
+}
+
+.card {
+  background: white;
+  border: 2px solid black;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 200px; /* hardcoded height and width */
+  width: 300px;  /* todo: change to dynamic sizing */
+}
+
+.card-header {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  flex-direction: fow;
+  gap: 10px;
+}
+
 /* scoreboard */
 .scoreboard-container {
   display: flex;
+  justify-content: flex-start;
+  gap: 20px;
 }
 
 .scoreboard-page {
@@ -40,7 +80,23 @@
   padding-top: 15px;
 }
 
+/* fonts */
+h1 {
+  font-size: 2.5rem;
+}
+
 h2 {
   text-decoration: underline;
   font-size: 1.7rem;
+  padding: 5px;
+}
+
+p {
+  font-size: 1.2rem;
+}
+
+.barlow-semibold {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 600;
+  font-style: normal;
 }
