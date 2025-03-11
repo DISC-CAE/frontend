@@ -125,7 +125,7 @@ function Form() {
             </label>
           </div>
 
-          <button type='submit'>Submit</button>
+          <button type='submit' className='cae-submit'>Submit</button>
         </form>
       </div>
     </div>
