@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
+import './Initiative.css';
 
-import './initiative.css';
-
+/* Map Display Names to API Query Parameters */
+const entityQueryMap = {
+  'BEYOND WASTE': 'beyond_waste',
+  'EDIBLE EVANSTON': 'edible_evanston',
+  ENERGY: 'energy',
+  'ENVIRONMENTAL JUSTICE': 'environment_justice',
+  'NATURAL HABITAT': 'natural_habitat',
+  'CLIMATE ACTION': 'climate_action',
+};
 
 /* Navigation Sidebar */
 const Sidebar = ({ fetchInitiatives, setCurrentEntity }) => {
@@ -46,5 +54,7 @@ const InitiativePage = () => {
     </div>
   );
 };
+
+
 
 export default InitiativePage;
