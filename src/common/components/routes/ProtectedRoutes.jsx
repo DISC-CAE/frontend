@@ -11,7 +11,7 @@ export function PrivateRoute() {
     return <div>Loading...</div>;
   }
 
-  return user ? <Outlet /> : <Navigate to='/login' replace />;
+  return <Outlet />;
 }
 
 export function PublicOnlyRoute() {
