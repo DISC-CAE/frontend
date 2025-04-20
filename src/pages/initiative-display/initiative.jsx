@@ -28,18 +28,23 @@ const Sidebar = ({ fetchInitiatives, setCurrentEntity }) => {
 };
 
 
-/* Main Initatives Display */
-<div className="initative-display">
- <h2 className="initiative-title">FOOD SHARING INITATIVE</h2>
- <div className="initiative-container">
-   <div className="initiative-content">
-     <h3>Action Mode</h3>
-     <ul>
-       <li>Serve</li>
-       <li>Educate</li>
-       <li>Advocate</li>
-     </ul>
-   </div>
- </div>
-</div>
+/* Main Initiatives Display */
+const InitiativePage = () => {
+  return (
+    <div className="initiative-display">
+      <h2 className="initiative-title">FOOD SHARING INITIATIVE</h2>
+      <div className="initiative-container">
+        <div className="initiative-content">
+          <h3>Action Mode</h3>
+          <ul>
+            <li>Serve</li>
+            <li>Educate</li>
+            <li>Advocate</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+};
 
+export default InitiativePage;
