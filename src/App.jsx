@@ -16,6 +16,7 @@ import SignUp from 'pages/account/SignUp';
 import Form from 'pages/cae-form/Form';
 import Home from 'pages/home/Home';
 import NotFound from 'pages/not-found/NotFound';
+import Scoreboard from 'pages/scoreboard/Scoreboard';
 
 import './App.css';
 
@@ -26,8 +27,9 @@ export default function App() {
         <Routes>
           <Route path='/' element={<NavLayout />}>
             <Route element={<PrivateRoute />}>
-              <Route index element={<Home />} />
+              <Route index element={<Scoreboard />} />
               <Route path='form' element={<Form />} />
+              <Route path='scoreboard' element={<Scoreboard />} />
             </Route>
             <Route element={<PublicOnlyRoute />}>
               <Route path='login' element={<Login />} />

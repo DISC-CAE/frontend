@@ -1,0 +1,111 @@
+/* Entire Page */
+body {
+  background: #EEF0E4;
+}
+
+/* Sidebar */
+.sidebar-container {
+  width: 250px;
+  min-height: 100vh;
+  padding: 30px;
+}
+
+.sidebar-list {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-item {
+  display: flex;
+  gap: 12px;
+  padding: 18px;
+  text-decoration: none;
+  color: white;
+  font-size: 1.2rem;
+  border-radius: 6px;
+  transition: background 0.2s;
+  background: black;
+  margin-bottom: 10px;
+}
+
+.sidebar-item:hover {
+  background: #E95D0C;
+}
+
+/* Initatives Grid */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px 15px;
+  flex-grow: 1;
+  padding: 20px;
+  /* Todo: fix gapping between cards (when < 6 cards) */
+}
+
+.card {
+  background: white;
+  border: 2px solid black;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 200px; /* Hardcoded height and width */
+  width: 300px;  /* Todo: change to dynamic sizing */
+}
+
+.card-header {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  flex-direction: fow;
+  gap: 10px;
+}
+
+/* Scoreboard */
+.scoreboard-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+.scoreboard-page {
+  flex: 1;
+  padding: 20px;
+  text-align: center;
+  padding-top: 15px;
+}
+
+.divider {
+  border: none;
+  height: 2px; 
+  background-color: #ccc; 
+  margin: 10px 0;
+  margin: 10px auto;
+  max-width: 600px;
+}
+
+/* Fonts */
+h1 {
+  font-size: 3rem;
+}
+
+h2 {
+  text-decoration: underline;
+  font-size: 2rem;
+  padding: 5px;
+}
+
+p {
+  font-size: 1.4rem;
+}
+
+.barlow-semibold {
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
