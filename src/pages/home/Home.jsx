@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import "./Home.css";
 
 const Home = () => {
@@ -54,7 +54,7 @@ const Home = () => {
 
       {/*the scoreboard menu tab goes to the event form rn
       whenever that gets fixed could just change reference idk what the url is as of now*/}
-      <a href="/form" className="learn-more-link">Learn more<span className="arrow"></span></a>
+      <a href="/scoreboard" className="learn-more-link">Learn more<span className="arrow"></span></a>
       </section>
       </main>
 

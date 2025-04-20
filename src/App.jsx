@@ -27,6 +27,7 @@ export default function App() {
         <Routes>
           <Route path='/' element={<NavLayout />}>
             <Route element={<PrivateRoute />}>
+              <Route index element={<Home />} />
               <Route index element={<Scoreboard />} />
               <Route path='form' element={<Form />} />
               <Route path='scoreboard' element={<Scoreboard />} />
