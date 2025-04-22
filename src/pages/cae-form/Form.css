@@ -142,4 +142,84 @@
 
 .submit-btn:hover {
   background: #a14d20;
+=======
+/* Form.css */
+
+#form-bg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #EEF0E4;
+  padding: 20px;
+}
+
+.form-container {
+  background: #EEF0E4;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+}
+
+h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.form-col {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: bold;
+  color: #34495e;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #EEF0E4;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border 0.3s ease-in-out;
+}
+
+input:focus, textarea:focus {
+  border-color: #EEF0E4;
+  outline: none;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #3498db;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+
+.cae-submit{
+  background-color: #e95d0c;
 }
