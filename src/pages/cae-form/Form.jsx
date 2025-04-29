@@ -9,6 +9,7 @@ const programOptions = [
   { value: 'environmental-justice-evanston', label: 'Environmental Justice Evanston' },
   { value: 'natural-habitat-evanston', label: 'Natural Habitat Evanston' }
 ];
+//
 
 const initiativesByProgram = {
   'beyond-waste': [

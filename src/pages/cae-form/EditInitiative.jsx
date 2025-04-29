@@ -8,6 +8,7 @@ const modeOfActionOptions = [
   { value: 'advocate', label: 'Advocate' },
 ];
 
+//
 function EditInitiative() {
   const { program, initiative } = useParams();
   const navigate = useNavigate();
