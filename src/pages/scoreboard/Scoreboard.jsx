@@ -1,32 +1,31 @@
 import React, { useEffect, useState } from 'react';
-
 import './Scoreboard.css';
 
-/* Map Display Names to API Query Parameters */
-const entityQueryMap = {
-  'BEYOND WASTE': 'beyond_waste',
-  'EDIBLE EVANSTON': 'edible_evanston',
-  ENERGY: 'energy',
-  'ENVIRONMENTAL JUSTICE': 'environment_justice',
-  'NATURAL HABITAT': 'natural_habitat',
-  'CLIMATE ACTION': 'climate_action',
-};
+/* Display Names map directly to programName in DB */
+const programNames = [
+  'Beyond Waste',
+  'Edible Evanston',
+  'Energy',
+  'Environmental Justice',
+  'Natural Habitat',
+  'Climate Action',
+];
 
 /* Navigation Sidebar */
-const Sidebar = ({ fetchInitiatives, setCurrentEntity }) => {
+const Sidebar = ({ fetchInitiatives, setCurrentProgram }) => {
   return (
     <aside className='sidebar-container'>
       <ul className='sidebar-list'>
-        {Object.keys(entityQueryMap).map((name, index) => (
+        {programNames.map((name, index) => (
           <li key={index}>
             <a
               className='sidebar-item barlow-semibold'
               onClick={() => {
-                setCurrentEntity(name); // Update header
-                fetchInitiatives(entityQueryMap[name]); // Fetch new data
+                setCurrentProgram(name);
+                fetchInitiatives(name);
               }}
             >
-              {name}
+              {name.toUpperCase()}
             </a>
           </li>
         ))}
@@ -44,6 +43,9 @@ const InitiativesGrid = ({ initiatives }) => {
           <div key={index} className='card'>
             <div className='card-header barlow-semibold'>{program.name}</div>
             <div className='card-content'>{program.description}</div>
+            {program.imageUrl && (
+              <img src={program.imageUrl} alt={program.name} className='card-image' />
+            )}
           </div>
         ))
       ) : (
@@ -54,7 +56,7 @@ const InitiativesGrid = ({ initiatives }) => {
 };
 
 /* Scoreboard Header */
-const ScoreboardHeader = ({ currentEntity }) => {
+const ScoreboardHeader = ({ currentProgram }) => {
   return (
     <div className='scoreboard-header'>
       <h1 className='barlow-semibold'>COMMUNITY SCOREBOARD</h1>
@@ -62,7 +64,7 @@ const ScoreboardHeader = ({ currentEntity }) => {
         Learn More about Evanston's Climate Wins!
       </p>
       <hr className='divider' />
-      <h2 className='barlow-semibold'>{currentEntity}</h2>
+      <h2 className='barlow-semibold'>{currentProgram.toUpperCase()}</h2>
     </div>
   );
 };
@@ -70,33 +72,33 @@ const ScoreboardHeader = ({ currentEntity }) => {
 /* Scoreboard Component */
 function Scoreboard() {
   const [initiatives, setInitiatives] = useState([]);
-  const [currentEntity, setCurrentEntity] = useState('EDIBLE EVANSTON'); // Default entity
+  const [currentProgram, setCurrentProgram] = useState('Edible Evanston'); // Default program
 
   useEffect(() => {
-    fetchInitiatives(entityQueryMap[currentEntity]);
+    fetchInitiatives(currentProgram);
   }, []);
 
-  const fetchInitiatives = async (entityParam) => {
+  const fetchInitiatives = async (programName) => {
     try {
       const response = await fetch(
-        `http://localhost:5050/cae/fetch-scoreboard?entity=${encodeURIComponent(entityParam)}`
+        `http://localhost:5050/cae/fetch-scoreboard?programName=${encodeURIComponent(programName)}`
       );
       if (!response.ok) throw new Error('Failed to fetch');
       const data = await response.json();
-      setInitiatives(data || []);
+      setInitiatives(data.initiatives || []);
     } catch (error) {
-      console.error('Error fetching initiatives:', entityParam, error);
+      console.error('Error fetching initiatives:', programName, error);
       setInitiatives([]);
     }
   };
 
   return (
     <div className='scoreboard-page'>
-      <ScoreboardHeader currentEntity={currentEntity} />
+      <ScoreboardHeader currentProgram={currentProgram} />
       <div className='scoreboard-container'>
         <Sidebar
           fetchInitiatives={fetchInitiatives}
-          setCurrentEntity={setCurrentEntity}
+          setCurrentProgram={setCurrentProgram}
         />
         <InitiativesGrid initiatives={initiatives} />
       </div>
