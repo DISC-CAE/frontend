@@ -86,6 +86,7 @@ export default function NavBar() {
       <Scoreboard onClick={() => navigate('/scoreboard')}>
         Scoreboard
       </Scoreboard>
+      <Data onClick={() => navigate('/data')}>Data</Data>
 
       {user ? (
         <Button.Secondary onClick={handleLogoutClick}>Log Out</Button.Secondary>
