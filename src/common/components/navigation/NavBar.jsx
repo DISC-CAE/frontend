@@ -44,6 +44,16 @@ const Scoreboard = styled(Button.Invisible)`
   font-family: monospace;
   margin-right: 20px;
 `;
+
+// Temporary "InitativePage" Nav
+const InitiativePage = styled(Button.Invisible)`
+  padding: 0;
+  font-size: 1.7rem;
+  font-weight: bold;
+  font-family: monospace;
+  margin-right: 20px;
+`;
+
 const Data = styled(Button.Invisible)`
   padding: 0;
   font-size: 1.7rem;
@@ -86,6 +96,7 @@ export default function NavBar() {
       <Scoreboard onClick={() => navigate('/scoreboard')}>
         Scoreboard
       </Scoreboard>
+      <InitiativePage onClick={() => navigate('/initiative')}> Initiative</InitiativePage> 
 
       {user ? (
         <Button.Secondary onClick={handleLogoutClick}>Log Out</Button.Secondary>

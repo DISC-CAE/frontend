@@ -36,6 +36,122 @@ body {
   background: #e95d0c;
  }
  
+ /* Initiatives Main Display */
+
+.initiative-title {
+  text-align: center;
+  background-color:lightgray;
+  font-size: 40px;
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: bold;
+  padding: 18px;
+  box-sizing: border-box;
+  color: #C9511E;
+  margin-right: 20px;
+}
+
+.column1-initiative-sidebar {
+  width: 400px;
+  min-height: 100vh; 
+  padding: 20px;
+  font-weight: bold;
+  font-family: "Barlow Semi Condensed", sans-serif;
+}
+
+.initiative-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  background-color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-right: 20px;
+}
  
+.initiative-page {
+  display: flex;
+  flex: 1; 
+  box-sizing: border-box;
+  padding: 35px;   
+}
+
  
+ /* Blown Up Initiative Details */
+
+ /* Action Mode */
+ .action-mode-options {
+  list-style: none;
+  padding: 15px;
+ }
+
+ .action-mode {
+  flex: 1;
+  padding: 15px;
+  padding-top: 0px;
+ }
+
+ .action-mode-options li.highlighted { /* What is highlighted (serve, educate, advocate) is currently hardcoded */
+  background-color:lightgray;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 25px;
+ }
+
+ .action-mode-options li {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 500; /* Semi bold */
+  font-size: 25px;
+ }
+
+ .initiative-image {
+  width: 100%
+ }
+
+ /* Action */
+ .action-description {
+  padding-left: 20px;
+  margin-left: 15px;
+  padding-top: 0px; /* Ensures this heading is level with other headings */
+  flex: 1.7;
+ }
+
+ .action-title { /* Repair Cafe */
+  text-decoration: underline;
+ }
  
+
+/* Metrics */
+.metrics {
+  padding: 20px;
+  padding-top: 0px; /* Ensures this heading is level with other headings */
+  flex: 1;
+}
+
+.metrics li {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 25px;
+}
+
+ /* Global Tags */ 
+
+ .column {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0; /* even distribution unless overridden */
+ }
+
+ p {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 27px; 
+  font-weight: 400;
+}
+
+h3 { /* Action Mode, Action, Metrics Headings */
+  font-size: 35px;
+  font-family: 'Source Sans Pro', sans-serif;
+ }
+
+h4 { /* People, Policy, Place Headings */
+  font-size: 27px;
+  font-family: 'Source Sans Pro', sans-serif;
+  margin-bottom: 0px;
+}

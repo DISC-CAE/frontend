@@ -17,7 +17,7 @@ import Form from 'pages/cae-form/Form';
 import Home from 'pages/home/Home';
 import NotFound from 'pages/not-found/NotFound';
 import Scoreboard from 'pages/scoreboard/Scoreboard';
-import InitiativePage from 'pages/initiative-display/Initiative';
+import InitiativePage from 'pages/initiative-display/initiative';
 
 import './App.css';
 
@@ -32,7 +32,7 @@ export default function App() {
               <Route index element={<Scoreboard />} />
               <Route path='form' element={<Form />} />
               <Route path='scoreboard' element={<Scoreboard />} />
-              <Route path='initiative/:entity' element={<InitiativePage />} />
+              <Route path='initiative' element={<InitiativePage />} />
             </Route>
             <Route element={<PublicOnlyRoute />}>
               <Route path='login' element={<Login />} />
