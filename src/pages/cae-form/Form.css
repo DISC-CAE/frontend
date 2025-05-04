@@ -1,80 +1,67 @@
-/* Form.css */
-
-#form-bg {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #EEF0E4;
-  padding: 20px;
-}
-
-.form-container {
-  background: #EEF0E4;
+.initiative-form-manager {
+  max-width: 700px;
+  margin: 40px auto;
   padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  width: 100%;
+  background: #fff;
+  border: 2px solid black;
+  border-radius: 10px;
+  font-family: "Barlow Semi Condensed", sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-h2 {
+.initiative-form-manager h2 {
   text-align: center;
-  color: #2c3e50;
-  margin-bottom: 20px;
+  font-size: 2rem;
+  margin-bottom: 0;
 }
 
-.form-col {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-bottom: 20px;
+.initiative-form-manager label {
+  font-weight: 600;
+  margin-right: 20px;
+  font-size: 1rem;
 }
 
-label {
-  font-weight: bold;
-  color: #34495e;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+.initiative-form-manager input[type="radio"] {
+  margin-right: 8px;
 }
 
-input, textarea {
-  width: 100%;
+.initiative-form-manager select,
+.initiative-form-manager input[type="password"] {
   padding: 10px;
-  border: 1px solid #EEF0E4;
+  font-size: 1rem;
+  border: 1px solid #aaa;
   border-radius: 6px;
-  font-size: 16px;
-  transition: border 0.3s ease-in-out;
-}
-
-input:focus, textarea:focus {
-  border-color: #EEF0E4;
-  outline: none;
-}
-
-textarea {
-  min-height: 100px;
-  resize: vertical;
-}
-
-button {
   width: 100%;
-  padding: 12px;
-  background-color: #3498db;
+}
+
+.initiative-form-manager button {
+  background-color: #E95D0C;
   color: white;
-  font-size: 16px;
   border: none;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s ease-in-out;
+  width: 100%;
+  transition: background-color 0.2s ease;
 }
 
-button:hover {
-  background-color: #2980b9;
+.initiative-form-manager button:hover {
+  background-color: #cf4e08;
 }
 
+.initiative-form-manager .mode-selector {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 10px;
+}
 
-.cae-submit{
-  background-color: #e95d0c;
+.initiative-form-manager .field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }

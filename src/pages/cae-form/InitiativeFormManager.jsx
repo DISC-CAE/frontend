@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
-import './Form.css';
 import InitiativeForm from './InitiativeForm';
 
 const PROGRAMS = [
@@ -12,44 +10,27 @@ const PROGRAMS = [
   'Climate Action',
 ];
 
-const Form = () => {
-  const [mode, setMode] = useState('');
-  const [modeSelected, setModeSelected] = useState(false);
+const InitiativeFormManager = () => {
+  const [mode, setMode] = useState('create'); // 'create' or 'edit'
   const [programName, setProgramName] = useState('');
   const [password, setPassword] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
+  const [formLocked, setFormLocked] = useState(false); // prevent mode switching
   const [initiativeOptions, setInitiativeOptions] = useState([]);
   const [selectedInitiative, setSelectedInitiative] = useState('');
   const [initiativeData, setInitiativeData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  const handleModeSelect = (e) => {
-    setMode(e.target.value);
-  };
-
-  const handleContinueToAuth = () => {
-    if (mode) {
-      setModeSelected(true);
-    } else {
-      alert('Please select a mode.');
-    }
-  };
 
   const handleProgramAuth = async () => {
     if (programName && password) {
       setAuthenticated(true);
+      setFormLocked(true); // lock mode switching
 
       if (mode === 'edit') {
-        try {
-          const res = await fetch(
-            `http://localhost:5050/cae/fetch-scoreboard?programName=${encodeURIComponent(programName)}`
-          );
-          const data = await res.json();
-          setInitiativeOptions(data.initiatives || []);
-        } catch (err) {
-          console.error('Failed to fetch initiatives:', err);
-        }
+        const res = await fetch(
+          `http://localhost:5050/cae/fetch-scoreboard?programName=${encodeURIComponent(programName)}`
+        );
+        const data = await res.json();
+        setInitiativeOptions(data.initiatives || []);
       }
     } else {
       alert('Please select a program and enter password.');
@@ -60,54 +41,58 @@ const Form = () => {
     if (mode !== 'edit' || !selectedInitiative) return;
 
     const fetchInitiative = async () => {
-      setLoading(true);
-      setError('');
       try {
         const res = await fetch(
           `http://localhost:5050/cae/fetch-initiative?programName=${encodeURIComponent(programName)}&initiativeName=${encodeURIComponent(selectedInitiative)}`
         );
         const data = await res.json();
+        console.log('[DEBUG] Loaded initiative data:', data);
         setInitiativeData(data);
       } catch (err) {
-        setError('Failed to load initiative.');
-        console.error(err);
-      } finally {
-        setLoading(false);
+        console.error('Failed to load initiative:', err);
       }
     };
 
     fetchInitiative();
   }, [mode, selectedInitiative, programName]);
 
-  const resetState = () => {
-    setMode('');
-    setModeSelected(false);
-    setProgramName('');
-    setPassword('');
-    setAuthenticated(false);
-    setInitiativeOptions([]);
-    setSelectedInitiative('');
-    setInitiativeData(null);
-    setError('');
-    setLoading(false);
-  };
-
   return (
     <div className='initiative-form-manager'>
       <h2>
-        {mode === 'edit' ? 'Edit Existing Initiative' : 'Create New Initiative'}
+        {mode === 'create'
+          ? 'Create New Initiative'
+          : 'Edit Existing Initiative'}
       </h2>
 
-      {!modeSelected ? (
+      {/* Show mode switch only before auth */}
+      {!authenticated && (
         <div>
-          <select value={mode} onChange={handleModeSelect} required>
-            <option value=''>Select Mode</option>
-            <option value='create'>Create New Initiative</option>
-            <option value='edit'>Edit Existing Initiative</option>
-          </select>
-          <button onClick={handleContinueToAuth}>Continue</button>
+          <label>
+            <input
+              type='radio'
+              value='create'
+              checked={mode === 'create'}
+              onChange={() => {
+                if (!formLocked) setMode('create');
+              }}
+            />
+            Create
+          </label>
+          <label>
+            <input
+              type='radio'
+              value='edit'
+              checked={mode === 'edit'}
+              onChange={() => {
+                if (!formLocked) setMode('edit');
+              }}
+            />
+            Edit
+          </label>
         </div>
-      ) : !authenticated ? (
+      )}
+
+      {!authenticated ? (
         <div>
           <select
             value={programName}
@@ -143,8 +128,6 @@ const Form = () => {
               </option>
             ))}
           </select>
-          {loading && <p>Loading...</p>}
-          {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>
       ) : (
         <InitiativeForm
@@ -153,14 +136,8 @@ const Form = () => {
           initialData={mode === 'edit' ? initiativeData : null}
         />
       )}
-
-      {modeSelected && (
-        <div style={{ marginTop: '20px' }}>
-          <button onClick={resetState}>Reset</button>
-        </div>
-      )}
     </div>
   );
 };
 
-export default Form;
+export default InitiativeFormManager;
