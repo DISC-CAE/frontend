@@ -94,13 +94,14 @@ body {
  .action-mode-options li.highlighted { /* What is highlighted (serve, educate, advocate) is currently hardcoded */
   background-color:lightgray;
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 25px;
+  font-size: 22px;
  }
 
  .action-mode-options li {
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 500; /* Semi bold */
-  font-size: 25px;
+  font-size: 22px;
+  margin-bottom: 6px;
  }
 
  .initiative-image {
@@ -108,17 +109,14 @@ body {
  }
 
  /* Action */
- .action-description {
-  padding-left: 20px;
-  margin-left: 15px;
+ .action-description p {
   padding-top: 0px; /* Ensures this heading is level with other headings */
   flex: 1.7;
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  max-width: 50ch;
+  overflow-wrap: break-word;
  }
 
- .action-title { /* Repair Cafe */
-  text-decoration: underline;
- }
- 
 
 /* Metrics */
 .metrics {
@@ -129,7 +127,7 @@ body {
 
 .metrics li {
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 25px;
+  font-size: 22px;
 }
 
  /* Global Tags */ 

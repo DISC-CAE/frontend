@@ -73,9 +73,16 @@ const InitiativePage = () => {
             {/* Action Mode */}
             <h3>Action Mode</h3>
             <ul className='action-mode-options'>
-              <li className='highlighted'>Serve</li>
-              <li>Educate</li>
-              <li>Advocate</li>
+              {['Serve', 'Educate', 'Advocate'].map((mode, idx) => (
+                <li
+                  key={idx}
+                  className={
+                    initiative?.modesOfAction?.includes(mode) ? 'highlighted' : ''
+                  }
+                >
+                  {mode}
+                </li>
+              ))}
             </ul>
             <img
               src={initiative.imageURL || default_image}
