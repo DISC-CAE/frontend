@@ -13,153 +13,195 @@ const PROGRAMS = [
 ];
 
 const Form = () => {
-  const [mode, setMode] = useState('');
-  const [modeSelected, setModeSelected] = useState(false);
   const [programName, setProgramName] = useState('');
   const [password, setPassword] = useState('');
-  const [authenticated, setAuthenticated] = useState(false);
   const [initiativeOptions, setInitiativeOptions] = useState([]);
   const [selectedInitiative, setSelectedInitiative] = useState('');
   const [initiativeData, setInitiativeData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [programDropdownOpen, setProgramDropdownOpen] = useState(false);
+  const [initiativeDropdownOpen, setInitiativeDropdownOpen] = useState(false);
+  const [step, setStep] = useState(0); // 0 = select, 1 = form
+  const [loadingInitiatives, setLoadingInitiatives] = useState(false);
 
-  const handleModeSelect = (e) => {
-    setMode(e.target.value);
-  };
-
-  const handleContinueToAuth = () => {
-    if (mode) {
-      setModeSelected(true);
-    } else {
-      alert('Please select a mode.');
-    }
-  };
-
-  const handleProgramAuth = async () => {
-    if (programName && password) {
-      setAuthenticated(true);
-
-      if (mode === 'edit') {
-        try {
-          const res = await fetch(
-            `http://localhost:5050/cae/fetch-scoreboard?programName=${encodeURIComponent(programName)}`
-          );
-          const data = await res.json();
-          setInitiativeOptions(data.initiatives || []);
-        } catch (err) {
-          console.error('Failed to fetch initiatives:', err);
-        }
-      }
-    } else {
-      alert('Please select a program and enter password.');
-    }
-  };
-
+  // Fetch initiatives when program changes
   useEffect(() => {
-    if (mode !== 'edit' || !selectedInitiative) return;
+    if (!programName) {
+      setInitiativeOptions([]);
+      setSelectedInitiative('');
+      return;
+    }
+    setLoadingInitiatives(true);
+    fetch(
+      `http://localhost:5050/cae/fetch-scoreboard?programName=${encodeURIComponent(programName)}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setInitiativeOptions(data.initiatives || []);
+        setSelectedInitiative('');
+      })
+      .catch(() => setInitiativeOptions([]))
+      .finally(() => setLoadingInitiatives(false));
+  }, [programName]);
 
-    const fetchInitiative = async () => {
-      setLoading(true);
-      setError('');
-      try {
-        const res = await fetch(
-          `http://localhost:5050/cae/fetch-initiative?programName=${encodeURIComponent(programName)}&initiativeName=${encodeURIComponent(selectedInitiative)}`
-        );
-        const data = await res.json();
-        setInitiativeData(data);
-      } catch (err) {
-        setError('Failed to load initiative.');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Fetch initiative data if editing
+  useEffect(() => {
+    if (step !== 1) return;
+    if (selectedInitiative && selectedInitiative !== '__add__') {
+      fetch(
+        `http://localhost:5050/cae/fetch-initiative?programName=${encodeURIComponent(programName)}&initiativeName=${encodeURIComponent(selectedInitiative)}`
+      )
+        .then((res) => res.json())
+        .then((data) => setInitiativeData(data))
+        .catch(() => setInitiativeData(null));
+    } else {
+      setInitiativeData(null);
+    }
+  }, [step, selectedInitiative, programName]);
 
-    fetchInitiative();
-  }, [mode, selectedInitiative, programName]);
-
-  const resetState = () => {
-    setMode('');
-    setModeSelected(false);
-    setProgramName('');
-    setPassword('');
-    setAuthenticated(false);
-    setInitiativeOptions([]);
-    setSelectedInitiative('');
-    setInitiativeData(null);
-    setError('');
-    setLoading(false);
+  // Handler for Next button
+  const handleNext = () => {
+    setStep(1);
   };
 
-  return (
-    <div className='initiative-form-manager'>
-      <h2>
-        {mode === 'edit' ? 'Edit Existing Initiative' : 'Create New Initiative'}
-      </h2>
+  // Handler for going back
+  const handleBack = () => {
+    setStep(0);
+    setInitiativeData(null);
+  };
 
-      {!modeSelected ? (
+  return step === 0 ? (
+    <div className='initiative-form-manager'>
+      <h2 className='form-title'>Program and Initiative Creation/Revision</h2>
+      <div className='flex-col-gap24'>
+        {/* Program Dropdown */}
         <div>
-          <select value={mode} onChange={handleModeSelect} required>
-            <option value=''>Select Mode</option>
-            <option value='create'>Create New Initiative</option>
-            <option value='edit'>Edit Existing Initiative</option>
-          </select>
-          <button onClick={handleContinueToAuth}>Continue</button>
+          <div className='dropdown-label'>Program</div>
+          <div className='dropdown-container'>
+            <div
+              className={`dropdown-selected${programName ? ' selected' : ''}`}
+              onClick={() => {
+                setProgramDropdownOpen((v) => !v);
+                setInitiativeDropdownOpen(false);
+              }}
+            >
+              {programName ? (
+                <span style={{ color: '#bbb' }}>{programName}</span>
+              ) : (
+                <span style={{ color: '#bbb' }}>Select Program</span>
+              )}
+              <span style={{ marginLeft: 8, fontSize: 18 }}>&#9660;</span>
+            </div>
+            {programDropdownOpen && (
+              <div className='dropdown-list'>
+                {PROGRAMS.map((p) => (
+                  <div
+                    key={p}
+                    className='dropdown-item'
+                    onClick={() => {
+                      setProgramName(p);
+                      setProgramDropdownOpen(false);
+                    }}
+                  >
+                    {p}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-      ) : !authenticated ? (
+
+        {/* Initiative Dropdown */}
         <div>
-          <select
-            value={programName}
-            onChange={(e) => setProgramName(e.target.value)}
-            required
-          >
-            <option value=''>Select Program</option>
-            {PROGRAMS.map((p) => (
-              <option key={p} value={p}>
-                {p}
-              </option>
-            ))}
-          </select>
+          <div className='dropdown-label'>Initiative</div>
+          <div className='dropdown-container'>
+            <div
+              className={`dropdown-selected${selectedInitiative ? ' selected' : ''}${!programName ? ' disabled' : ''}`}
+              onClick={() => {
+                if (programName) {
+                  setInitiativeDropdownOpen((v) => !v);
+                  setProgramDropdownOpen(false);
+                }
+              }}
+            >
+              {selectedInitiative
+                ? selectedInitiative === '__add__'
+                  ? 'Add Initiative'
+                  : selectedInitiative
+                : 'Select Initiative'}
+              <span style={{ marginLeft: 8, fontSize: 18 }}>&#9660;</span>
+            </div>
+            {initiativeDropdownOpen && programName && (
+              <div className='dropdown-list'>
+                {loadingInitiatives ? (
+                  <div className='dropdown-item'>Loading...</div>
+                ) : (
+                  <>
+                    {initiativeOptions.map((i) => (
+                      <div
+                        key={i.name}
+                        className='dropdown-item'
+                        onClick={() => {
+                          setSelectedInitiative(i.name);
+                          setInitiativeDropdownOpen(false);
+                        }}
+                      >
+                        {i.name}
+                      </div>
+                    ))}
+                    <div
+                      className='dropdown-item add'
+                      onClick={() => {
+                        setSelectedInitiative('__add__');
+                        setInitiativeDropdownOpen(false);
+                      }}
+                    >
+                      Add Initiative <span style={{ fontSize: 18 }}>+</span>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Password Input */}
+        <div>
+          <div className='password-label'>Password</div>
           <input
             type='password'
-            placeholder='Enter password'
+            placeholder='Enter Password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className='password-input'
           />
-          <button onClick={handleProgramAuth}>Continue</button>
         </div>
-      ) : mode === 'edit' && !initiativeData ? (
-        <div>
-          <select
-            value={selectedInitiative}
-            onChange={(e) => setSelectedInitiative(e.target.value)}
-            required
-          >
-            <option value=''>Select Initiative</option>
-            {initiativeOptions.map((i) => (
-              <option key={i.name} value={i.name}>
-                {i.name}
-              </option>
-            ))}
-          </select>
-          {loading && <p>Loading...</p>}
-          {error && <p style={{ color: 'red' }}>{error}</p>}
-        </div>
-      ) : (
-        <InitiativeForm
-          mode={mode}
-          programName={programName}
-          initialData={mode === 'edit' ? initiativeData : null}
-        />
-      )}
 
-      {modeSelected && (
-        <div style={{ marginTop: '20px' }}>
-          <button onClick={resetState}>Reset</button>
-        </div>
-      )}
+        {/* Next Button */}
+        <button
+          className='next-button'
+          style={{ marginTop: 8 }}
+          onClick={handleNext}
+          disabled={!programName || !selectedInitiative || !password}
+        >
+          Next
+        </button>
+      </div>
     </div>
+  ) : (
+    <>
+      <button
+        className='initiative-form-back-arrow'
+        onClick={handleBack}
+        aria-label='Back'
+      >
+        &#8592; Back
+      </button>
+      <InitiativeForm
+        mode={selectedInitiative === '__add__' ? 'create' : 'edit'}
+        programName={programName}
+        initialData={selectedInitiative === '__add__' ? null : initiativeData}
+      />
+    </>
   );
 };
 
