@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 import './InitiativeForm.css';
 
-const InitiativeForm = ({ mode, programName, initialData }) => {
+const InitiativeForm = ({ mode, programName, initialData, authToken }) => {
   const [form, setForm] = useState({
     initiativeName: '',
     description: '',
-    imageUrl: '',
     modesOfAction: [],
     metrics: {
       People: [],
@@ -14,21 +13,51 @@ const InitiativeForm = ({ mode, programName, initialData }) => {
       Policy: [],
     },
   });
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState('');
 
   useEffect(() => {
-    if (initialData) {
+    // Only set initial data if we're in edit mode and have data
+    if (mode === 'edit' && initialData) {
       setForm({
         initiativeName: initialData.initiativeName || '',
         description: initialData.description || '',
-        imageUrl: initialData.imageUrl || '',
         modesOfAction: initialData.modesOfAction || [],
         metrics: initialData.metrics || { People: [], Place: [], Policy: [] },
       });
+      setPreviewUrl(initialData.imageUrl || '');
+    } else if (mode === 'create') {
+      // Reset form for create mode
+      setForm({
+        initiativeName: '',
+        description: '',
+        modesOfAction: [],
+        metrics: {
+          People: [],
+          Place: [],
+          Policy: [],
+        },
+      });
+      setPreviewUrl('');
+      setSelectedImage(null);
     }
-  }, [initialData]);
+  }, [mode, initialData]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+      // Create preview URL
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const toggleMode = (mode) => {
@@ -60,19 +89,28 @@ const InitiativeForm = ({ mode, programName, initialData }) => {
     e.preventDefault();
     const endpoint =
       mode === 'create'
-        ? 'http://localhost:5050/cae/add-initiative'
-        : 'http://localhost:5050/cae/edit-initiative';
+        ? 'http://localhost:5050/auth/add-initiative'
+        : 'http://localhost:5050/auth/edit-initiative';
 
-    const body = {
-      programName,
-      ...form,
-    };
+    const formData = new FormData();
+    formData.append('programName', programName);
+    formData.append('initiativeName', form.initiativeName);
+    formData.append('description', form.description);
+    formData.append('modesOfAction', JSON.stringify(form.modesOfAction));
+    formData.append('metrics', JSON.stringify(form.metrics));
+
+    // Only append image if it's a new upload
+    if (selectedImage) {
+      formData.append('image', selectedImage);
+    }
 
     try {
       const res = await fetch(endpoint, {
-        method: 'POST', // or PATCH if you prefer
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: formData,
       });
 
       const data = await res.json();
@@ -146,16 +184,22 @@ const InitiativeForm = ({ mode, programName, initialData }) => {
           </div>
           <div className='initiative-form-group'>
             <label className='initiative-form-label'>
-              If applicable, please upload any images related to your action
+              Upload Initiative Image
             </label>
-            <input
-              type='text'
-              name='imageUrl'
-              className='initiative-form-input'
-              value={form.imageUrl}
-              onChange={handleChange}
-              placeholder='Upload .jpg'
-            />
+            <div className='initiative-form-image-upload'>
+              <input
+                type='file'
+                accept='image/jpeg,image/png,image/gif'
+                onChange={handleImageChange}
+                className='initiative-form-file-input'
+                required={mode === 'create'}
+              />
+              {previewUrl && (
+                <div className='initiative-form-image-preview'>
+                  <img src={previewUrl} alt='Preview' />
+                </div>
+              )}
+            </div>
           </div>
         </div>
         <div className='initiative-form-right'>

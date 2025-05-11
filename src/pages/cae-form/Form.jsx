@@ -12,6 +12,19 @@ const PROGRAMS = [
   'Climate Action',
 ];
 
+// Helper function to map program name to ID
+function getProgramIdByName(name) {
+  const mapping = {
+    'Beyond Waste': 10,
+    'Edible Evanston': 11,
+    Energy: 12,
+    'Environmental Justice': 13,
+    'Natural Habitat': 14,
+    'Climate Action': 15,
+  };
+  return mapping[name];
+}
+
 const Form = () => {
   const [programName, setProgramName] = useState('');
   const [password, setPassword] = useState('');
@@ -22,6 +35,8 @@ const Form = () => {
   const [initiativeDropdownOpen, setInitiativeDropdownOpen] = useState(false);
   const [step, setStep] = useState(0); // 0 = select, 1 = form
   const [loadingInitiatives, setLoadingInitiatives] = useState(false);
+  const [authToken, setAuthToken] = useState('');
+  const [isCreateMode, setIsCreateMode] = useState(false);
 
   // Fetch initiatives when program changes
   useEffect(() => {
@@ -32,7 +47,12 @@ const Form = () => {
     }
     setLoadingInitiatives(true);
     fetch(
-      `http://localhost:5050/cae/fetch-scoreboard?programName=${encodeURIComponent(programName)}`
+      `http://localhost:5050/auth/fetch-scoreboard?programName=${encodeURIComponent(programName)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
     )
       .then((res) => res.json())
       .then((data) => {
@@ -41,33 +61,61 @@ const Form = () => {
       })
       .catch(() => setInitiativeOptions([]))
       .finally(() => setLoadingInitiatives(false));
-  }, [programName]);
-
-  // Fetch initiative data if editing
-  useEffect(() => {
-    if (step !== 1) return;
-    if (selectedInitiative && selectedInitiative !== '__add__') {
-      fetch(
-        `http://localhost:5050/cae/fetch-initiative?programName=${encodeURIComponent(programName)}&initiativeName=${encodeURIComponent(selectedInitiative)}`
-      )
-        .then((res) => res.json())
-        .then((data) => setInitiativeData(data))
-        .catch(() => setInitiativeData(null));
-    } else {
-      setInitiativeData(null);
-    }
-  }, [step, selectedInitiative, programName]);
+  }, [programName, authToken]);
 
   // Handler for Next button
-  const handleNext = () => {
-    setStep(1);
+  const handleNext = async () => {
+    try {
+      // Use the selected program's ID and password
+      const res = await fetch('http://localhost:5050/auth/program-login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          programId: getProgramIdByName(programName),
+          password: password,
+        }),
+      });
+
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+
+      setAuthToken('program-session'); // You can generate a real token if you want
+      setStep(1);
+      setIsCreateMode(selectedInitiative === '__add__');
+      setInitiativeData(null);
+    } catch (err) {
+      alert('Authentication failed: ' + err.message);
+    }
   };
 
   // Handler for going back
   const handleBack = () => {
     setStep(0);
     setInitiativeData(null);
+    setAuthToken('');
+    setIsCreateMode(false);
   };
+
+  // Fetch initiative data only if we're in edit mode
+  useEffect(() => {
+    if (step !== 1 || isCreateMode) return;
+
+    if (selectedInitiative && selectedInitiative !== '__add__') {
+      fetch(
+        `http://localhost:5050/auth/fetch-initiative?programName=${encodeURIComponent(programName)}&initiativeName=${encodeURIComponent(selectedInitiative)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => setInitiativeData(data))
+        .catch(() => setInitiativeData(null));
+    }
+  }, [step, selectedInitiative, programName, authToken, isCreateMode]);
 
   return step === 0 ? (
     <div className='initiative-form-manager'>
@@ -197,9 +245,10 @@ const Form = () => {
         &#8592; Back
       </button>
       <InitiativeForm
-        mode={selectedInitiative === '__add__' ? 'create' : 'edit'}
+        mode={isCreateMode ? 'create' : 'edit'}
         programName={programName}
-        initialData={selectedInitiative === '__add__' ? null : initiativeData}
+        initialData={isCreateMode ? null : initiativeData}
+        authToken={authToken}
       />
     </>
   );
