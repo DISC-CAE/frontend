@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-
-import EventsList from 'common/components/caeEvents/EventList';
+import React, { useEffect, useState } from 'react';
 
 import './Form.css';
+import InitiativeForm from './InitiativeForm';
 
-const organizations = [
+const PROGRAMS = [
   'Beyond Waste',
   'Edible Evanston',
   'Energy',
@@ -13,123 +12,246 @@ const organizations = [
   'Climate Action',
 ];
 
-function Form() {
-  const [formData, setFormData] = useState({
-    organization_name: '',
-    initiative_name: '',
-    event_date: '',
-    event_location: '',
-    event_description: '',
-  });
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+// Helper function to map program name to ID
+function getProgramIdByName(name) {
+  const mapping = {
+    'Beyond Waste': 10,
+    'Edible Evanston': 11,
+    Energy: 12,
+    'Environmental Justice': 13,
+    'Natural Habitat': 14,
+    'Climate Action': 15,
   };
+  return mapping[name];
+}
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const Form = () => {
+  const [programName, setProgramName] = useState('');
+  const [password, setPassword] = useState('');
+  const [initiativeOptions, setInitiativeOptions] = useState([]);
+  const [selectedInitiative, setSelectedInitiative] = useState('');
+  const [initiativeData, setInitiativeData] = useState(null);
+  const [programDropdownOpen, setProgramDropdownOpen] = useState(false);
+  const [initiativeDropdownOpen, setInitiativeDropdownOpen] = useState(false);
+  const [step, setStep] = useState(0); // 0 = select, 1 = form
+  const [loadingInitiatives, setLoadingInitiatives] = useState(false);
+  const [authToken, setAuthToken] = useState('');
+  const [isCreateMode, setIsCreateMode] = useState(false);
+
+  // Fetch initiatives when program changes
+  useEffect(() => {
+    if (!programName) {
+      setInitiativeOptions([]);
+      setSelectedInitiative('');
+      return;
+    }
+    setLoadingInitiatives(true);
+    fetch(
+      `http://localhost:5050/auth/fetch-scoreboard?programName=${encodeURIComponent(programName)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setInitiativeOptions(data.initiatives || []);
+        setSelectedInitiative('');
+      })
+      .catch(() => setInitiativeOptions([]))
+      .finally(() => setLoadingInitiatives(false));
+  }, [programName, authToken]);
+
+  // Handler for Next button
+  const handleNext = async () => {
     try {
-      console.log('Submitting form:', formData);
-
-      const response = await fetch('http://localhost:5050/cae/add-initiative', {
+      // Use the selected program's ID and password
+      const res = await fetch('http://localhost:5050/auth/program-login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          programId: getProgramIdByName(programName),
+          password: password,
+        }),
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
 
-      const data = await response.json();
-      console.log('Response:', data);
-      alert('Event added successfully!');
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('Failed to submit event.');
+      setAuthToken('program-session'); // You can generate a real token if you want
+      setStep(1);
+      setIsCreateMode(selectedInitiative === '__add__');
+      setInitiativeData(null);
+    } catch (err) {
+      alert('Authentication failed: ' + err.message);
     }
   };
 
-  return (
-    <div id='form-bg'>
-      <div className='form-container'>
-        <h2>Submit Your Climate Contribution</h2>
-        <form onSubmit={handleSubmit}>
-          <div className='form-col'>
-            <label>
-              Organization Name
-              <select
-                name='organization_name'
-                value={formData.organization_name}
-                onChange={handleChange}
-                required
-              >
-                <option value=''>Select Organization</option>
-                {organizations.map((org) => (
-                  <option key={org} value={org}>
-                    {org}
-                  </option>
+  // Handler for going back
+  const handleBack = () => {
+    setStep(0);
+    setInitiativeData(null);
+    setAuthToken('');
+    setIsCreateMode(false);
+  };
+
+  // Fetch initiative data only if we're in edit mode
+  useEffect(() => {
+    if (step !== 1 || isCreateMode) return;
+
+    if (selectedInitiative && selectedInitiative !== '__add__') {
+      fetch(
+        `http://localhost:5050/auth/fetch-initiative?programName=${encodeURIComponent(programName)}&initiativeName=${encodeURIComponent(selectedInitiative)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => setInitiativeData(data))
+        .catch(() => setInitiativeData(null));
+    }
+  }, [step, selectedInitiative, programName, authToken, isCreateMode]);
+
+  return step === 0 ? (
+    <div className='initiative-form-manager'>
+      <h2 className='form-title'>Program and Initiative Creation/Revision</h2>
+      <div className='flex-col-gap24'>
+        {/* Program Dropdown */}
+        <div>
+          <div className='dropdown-label'>Program</div>
+          <div className='dropdown-container'>
+            <div
+              className={`dropdown-selected${programName ? ' selected' : ''}`}
+              onClick={() => {
+                setProgramDropdownOpen((v) => !v);
+                setInitiativeDropdownOpen(false);
+              }}
+            >
+              {programName ? (
+                <span style={{ color: '#bbb' }}>{programName}</span>
+              ) : (
+                <span style={{ color: '#bbb' }}>Select Program</span>
+              )}
+              <span style={{ marginLeft: 8, fontSize: 18 }}>&#9660;</span>
+            </div>
+            {programDropdownOpen && (
+              <div className='dropdown-list'>
+                {PROGRAMS.map((p) => (
+                  <div
+                    key={p}
+                    className='dropdown-item'
+                    onClick={() => {
+                      setProgramName(p);
+                      setProgramDropdownOpen(false);
+                    }}
+                  >
+                    {p}
+                  </div>
                 ))}
-              </select>
-            </label>
-
-            <label>
-              Initiative
-              <input
-                name='initiative_name'
-                value={formData.initiative1_description}
-                onChange={handleChange}
-                placeholder='Event Name'
-                required
-              />
-            </label>
+              </div>
+            )}
           </div>
+        </div>
 
-          <div className='form-col'>
-            <label>
-              Date
-              <input
-                type='date'
-                name='event_date'
-                value={formData.event_date}
-                onChange={handleChange}
-                required
-              />
-            </label>
-
-            <label>
-              Location
-              <input
-                name='event_location'
-                value={formData.event_location}
-                onChange={handleChange}
-                placeholder='Location'
-                required
-              />
-            </label>
-
-            <label>
-              Description
-              <textarea
-                name='event_description'
-                value={formData.event_description}
-                onChange={handleChange}
-                placeholder='Description'
-                required
-              />
-            </label>
+        {/* Initiative Dropdown */}
+        <div>
+          <div className='dropdown-label'>Initiative</div>
+          <div className='dropdown-container'>
+            <div
+              className={`dropdown-selected${selectedInitiative ? ' selected' : ''}${!programName ? ' disabled' : ''}`}
+              onClick={() => {
+                if (programName) {
+                  setInitiativeDropdownOpen((v) => !v);
+                  setProgramDropdownOpen(false);
+                }
+              }}
+            >
+              {selectedInitiative
+                ? selectedInitiative === '__add__'
+                  ? 'Add Initiative'
+                  : selectedInitiative
+                : 'Select Initiative'}
+              <span style={{ marginLeft: 8, fontSize: 18 }}>&#9660;</span>
+            </div>
+            {initiativeDropdownOpen && programName && (
+              <div className='dropdown-list'>
+                {loadingInitiatives ? (
+                  <div className='dropdown-item'>Loading...</div>
+                ) : (
+                  <>
+                    {initiativeOptions.map((i) => (
+                      <div
+                        key={i.name}
+                        className='dropdown-item'
+                        onClick={() => {
+                          setSelectedInitiative(i.name);
+                          setInitiativeDropdownOpen(false);
+                        }}
+                      >
+                        {i.name}
+                      </div>
+                    ))}
+                    <div
+                      className='dropdown-item add'
+                      onClick={() => {
+                        setSelectedInitiative('__add__');
+                        setInitiativeDropdownOpen(false);
+                      }}
+                    >
+                      Add Initiative <span style={{ fontSize: 18 }}>+</span>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
           </div>
+        </div>
 
-          <button type='submit' className='cae-submit'>Submit</button>
-        </form>
+        {/* Password Input */}
+        <div>
+          <div className='password-label'>Password</div>
+          <input
+            type='password'
+            placeholder='Enter Password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className='password-input'
+          />
+        </div>
+
+        {/* Next Button */}
+        <button
+          className='next-button'
+          style={{ marginTop: 8 }}
+          onClick={handleNext}
+          disabled={!programName || !selectedInitiative || !password}
+        >
+          Next
+        </button>
       </div>
     </div>
+  ) : (
+    <>
+      <button
+        className='initiative-form-back-arrow'
+        onClick={handleBack}
+        aria-label='Back'
+      >
+        &#8592; Back
+      </button>
+      <InitiativeForm
+        mode={isCreateMode ? 'create' : 'edit'}
+        programName={programName}
+        initialData={isCreateMode ? null : initiativeData}
+        authToken={authToken}
+      />
+    </>
   );
-}
+};
 
 export default Form;

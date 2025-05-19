@@ -1,5 +1,7 @@
-/* Entire Page */
+/* Reset & Global */
 body {
+  margin: 0;
+  font-family: "Barlow Semi Condensed", sans-serif;
   background: #EEF0E4;
 }
 
@@ -7,39 +9,60 @@ body {
 .sidebar-container {
   width: 250px;
   min-height: 100vh;
-  padding: 30px;
+  padding: 30px 20px;
+  /* background: #111; */
 }
 
 .sidebar-list {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .sidebar-item {
-  display: flex;
-  gap: 12px;
-  padding: 18px;
-  text-decoration: none;
-  color: white;
-  font-size: 1.2rem;
-  border-radius: 6px;
-  transition: background 0.2s;
+  display: block;
+  padding: 16px 18px;
   background: black;
+  color: white;
+  font-size: 1.1rem;
+  border-radius: 6px;
   margin-bottom: 10px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s;
+  border: none;
+  width: 100%;
+  text-transform: uppercase;
 }
 
-.sidebar-item:hover {
+.sidebar-item:hover,
+.sidebar-item.active {
   background: #E95D0C;
 }
 
-/* Initatives Grid */
+/* Scoreboard Layout */
+.scoreboard-page {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  text-align: center;
+}
+
+.scoreboard-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+  flex-grow: 1;
+  margin-top: 20px;
+}
+
+/* Initiatives Grid */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px 15px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  padding: 10px;
   flex-grow: 1;
-  padding: 20px;
-  /* Todo: fix gapping between cards (when < 6 cards) */
 }
 
 .card {
@@ -49,63 +72,67 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 200px; /* Hardcoded height and width */
-  width: 300px;  /* Todo: change to dynamic sizing */
+  border-radius: 6px;
+  transition: box-shadow 0.2s;
+  max-height: 350px;      
+  height: auto;            
+  overflow: hidden;        
+
+}
+
+.card:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .card-header {
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   margin-bottom: 10px;
+  text-align: center;
 }
 
 .card-content {
   display: flex;
-  align-items: center;
-  flex-direction: fow;
+  flex-direction: column;
   gap: 10px;
-}
-
-/* Scoreboard */
-.scoreboard-container {
-  display: flex;
-  justify-content: flex-start;
-  gap: 20px;
-}
-
-.scoreboard-page {
-  flex: 1;
-  padding: 20px;
   text-align: center;
-  padding-top: 15px;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.card-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+/* Header */
+.scoreboard-header {
+  text-align: center;
 }
 
 .divider {
   border: none;
-  height: 2px; 
-  background-color: #ccc; 
-  margin: 10px 0;
+  height: 2px;
+  background-color: #ccc;
   margin: 10px auto;
   max-width: 600px;
 }
 
 /* Fonts */
 h1 {
-  font-size: 3rem;
+  font-size: 2.8rem;
+  margin: 0;
 }
 
-h2 {
-  text-decoration: underline;
-  font-size: 2rem;
-  padding: 5px;
-}
+
 
 p {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
+  margin: 10px 0;
 }
 
 .barlow-semibold {
-  font-family: "Barlow Semi Condensed", sans-serif;
   font-weight: 600;
   font-style: normal;
 }
