@@ -96,7 +96,6 @@ export default function NavBar() {
       <Scoreboard onClick={() => navigate('/scoreboard')}>
         Scoreboard
       </Scoreboard>
-      <InitiativePage onClick={() => navigate('/initiative')}> Initiative</InitiativePage> 
 
       {user ? (
         <Button.Secondary onClick={handleLogoutClick}>Log Out</Button.Secondary>

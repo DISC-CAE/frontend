@@ -3,40 +3,30 @@ body {
   background: #eef0e4;
  }
  
- 
- /* Sidebar */
- .initiative-sidebar-container {
-  width: 500px;
-  min-height: 100vh;
-  margin-top: 75px;
-  padding: 30px;
- }
- 
- 
- .sidebar-list {
-  list-style: none;
-  padding: 0;
- }
- 
- 
- .sidebar-item {
+ .initiative-layout {
   display: flex;
-  gap: 12px;
-  padding: 18px;
-  text-decoration: none;
-  color: white;
+  align-items: flex-start; /* aligns the button to the top of the white box */
+}
+
+.back-button {
   font-size: 1.2rem;
-  border-radius: 6px;
-  transition: background 0.2s;
-  background: black;
-  margin-bottom: 10px;
- }
- 
- 
- .sidebar-item:hover {
-  background: #e95d0c;
- }
- 
+  color: white;
+  background-color: black;
+  border-radius: 10px;
+  padding: 1rem 0.6rem;
+  transition: background-color 0.2s ease;
+  border: none;
+  margin-right: 1.5rem;
+  margin-top: 3.3rem;
+  white-space: nowrap;
+}
+
+.back-button:hover {
+  background-color: #C9511E;
+  border-color: #C9511E;
+}
+
+
  /* Initiatives Main Display */
 
 .initiative-title {

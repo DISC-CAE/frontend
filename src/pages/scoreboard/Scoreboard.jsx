@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
+import {Link} from 'react-router-dom';
 import './Scoreboard.css';
 
 // Available program names
@@ -31,15 +32,17 @@ const Sidebar = ({ onSelect, activeProgram }) => (
 );
 
 // Initiative Grid
-const InitiativesGrid = ({ initiatives }) => (
+const InitiativesGrid = ({ initiatives, program }) => (
   <div className='grid-container'>
     {initiatives.length ? (
       initiatives.map(({ name, description, imageUrl }) => (
-        <div key={name} className='card'>
+        <Link to={`/initiative/${encodeURIComponent(program)}/${encodeURIComponent(name)}`} key={name} className="card-link">
+        <div className='card'>
           <div className='card-header barlow-semibold'>{name}</div>
           <div className='card-content'>{description}</div>
           {imageUrl && <img src={imageUrl} alt={name} className='card-image' />}
         </div>
+      </Link>
       ))
     ) : (
       <p>No initiatives available.</p>
@@ -92,7 +95,7 @@ const Scoreboard = () => {
           onSelect={handleProgramSelect}
           activeProgram={currentProgram}
         />
-        <InitiativesGrid initiatives={initiatives} />
+        <InitiativesGrid initiatives={initiatives} program={currentProgram} />
       </div>
     </main>
   );
