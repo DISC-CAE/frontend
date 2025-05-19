@@ -16,7 +16,7 @@ const entityQueryMap = {
 /* Navigation Sidebar */
 const Sidebar = ({ fetchInitiatives, setCurrentEntity }) => {
   return (
-    <aside className='sidebar-container'>
+    <aside className='initiative-sidebar-container'>
       <ul className='sidebar-list'>
         {Object.keys(entityQueryMap).map((name, index) => (
           <li key={index}>
@@ -55,6 +55,7 @@ const InitiativePage = () => {
     }
   };
 
+  /* Fix this */
   useEffect(() => {
     fetchProgram({
       programNameParam: 'Energy',
