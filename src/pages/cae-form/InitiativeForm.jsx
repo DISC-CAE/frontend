@@ -89,8 +89,8 @@ const InitiativeForm = ({ mode, programName, initialData, authToken }) => {
     e.preventDefault();
     const endpoint =
       mode === 'create'
-        ? 'http://localhost:5050/auth/add-initiative'
-        : 'http://localhost:5050/auth/edit-initiative';
+        ? `${process.env.REACT_APP_BACKEND_URL}/auth/add-initiative`
+        : `${process.env.REACT_APP_BACKEND_URL}/auth/edit-initiative`;
 
     const formData = new FormData();
     formData.append('programName', programName);
