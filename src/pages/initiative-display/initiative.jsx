@@ -15,7 +15,7 @@ const InitiativePage = () => {
   const fetchProgram = async ({programNameParam, initiativeNameParam}) => {
     try {
       const response = await fetch(
-        `http://localhost:5050/cae/fetch-initiative?programName=${encodeURIComponent(programNameParam)}&initiativeName=${encodeURIComponent(initiativeNameParam)}`
+        `${process.env.REACT_APP_BACKEND_URL}/cae/fetch-initiative?programName=${encodeURIComponent(programNameParam)}&initiativeName=${encodeURIComponent(initiativeNameParam)}`
       );
       if (!response.ok) throw new Error('Failed to fetch');
       const data = await response.json();
