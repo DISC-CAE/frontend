@@ -67,7 +67,7 @@ const Form = () => {
   const handleNext = async () => {
     try {
       // Use the selected program's ID and password
-      const res = await fetch('{process.env.REACT_APP_BACKEND_URL}/auth/program-login', {
+      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/program-login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -104,7 +104,7 @@ const Form = () => {
 
     if (selectedInitiative && selectedInitiative !== '__add__') {
       fetch(
-        `{process.env.REACT_APP_BACKEND_URL}/auth/fetch-initiative?programName=${encodeURIComponent(programName)}&initiativeName=${encodeURIComponent(selectedInitiative)}`,
+        `${process.env.REACT_APP_BACKEND_URL}/auth/fetch-initiative?programName=${encodeURIComponent(programName)}&initiativeName=${encodeURIComponent(selectedInitiative)}`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
