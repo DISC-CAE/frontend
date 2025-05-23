@@ -68,7 +68,7 @@ const Scoreboard = () => {
   const fetchInitiatives = useCallback(async (programName) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}?programName=${encodeURIComponent(programName)}`
+        `${process.env.REACT_APP_BACKEND_URL}/cae/fetch-scoreboard/?programName=${encodeURIComponent(programName)}`
       );
       if (!response.ok) throw new Error('Failed to fetch');
       const data = await response.json();
