@@ -1,107 +1,104 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
+import {Link} from 'react-router-dom';
 import './Scoreboard.css';
 
-/* Map Display Names to API Query Parameters */
-const entityQueryMap = {
-  'BEYOND WASTE': 'beyond_waste',
-  'EDIBLE EVANSTON': 'edible_evanston',
-  ENERGY: 'energy',
-  'ENVIRONMENTAL JUSTICE': 'environment_justice',
-  'NATURAL HABITAT': 'natural_habitat',
-  'CLIMATE ACTION': 'climate_action',
-};
+// Available program names
+const PROGRAMS = [
+  'Beyond Waste',
+  'Edible Evanston',
+  'Energy',
+  'Environmental Justice',
+  'Natural Habitat',
+  'Climate Action',
+];
 
-/* Navigation Sidebar */
-const Sidebar = ({ fetchInitiatives, setCurrentEntity }) => {
-  return (
-    <aside className='sidebar-container'>
-      <ul className='sidebar-list'>
-        {Object.keys(entityQueryMap).map((name, index) => (
-          <li key={index}>
-            <a
-              className='sidebar-item barlow-semibold'
-              onClick={() => {
-                setCurrentEntity(name); // Update header
-                fetchInitiatives(entityQueryMap[name]); // Fetch new data
-              }}
-            >
-              {name}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </aside>
-  );
-};
+// Sidebar Navigation
+const Sidebar = ({ onSelect, activeProgram }) => (
+  <aside className='sidebar-container'>
+    <ul className='sidebar-list'>
+      {PROGRAMS.map((program) => (
+        <li key={program}>
+          <button
+            className={`sidebar-item barlow-semibold ${program === activeProgram ? 'active' : ''}`}
+            onClick={() => onSelect(program)}
+          >
+            {program.toUpperCase()}
+          </button>
+        </li>
+      ))}
+    </ul>
+  </aside>
+);
 
-/* Initiatives Grid */
-const InitiativesGrid = ({ initiatives }) => {
-  return (
-    <div className='grid-container'>
-      {initiatives.length > 0 ? (
-        initiatives.map((program, index) => (
-          <div key={index} className='card'>
-            <div className='card-header barlow-semibold'>{program.name}</div>
-            <div className='card-content'>{program.description}</div>
-          </div>
-        ))
-      ) : (
-        <p>No initiatives available.</p>
-      )}
-    </div>
-  );
-};
+// Initiative Grid
+const InitiativesGrid = ({ initiatives, program }) => (
+  <div className='grid-container'>
+    {initiatives.length ? (
+      initiatives.map(({ name, description, imageUrl }) => (
+        <Link to={`/initiative/${encodeURIComponent(program)}/${encodeURIComponent(name)}`} key={name} className="card-link">
+        <div className='card'>
+          <div className='card-header barlow-semibold'>{name}</div>
+          <div className='card-content'>{description}</div>
+          {imageUrl && <img src={imageUrl} alt={name} className='card-image' />}
+        </div>
+      </Link>
+      ))
+    ) : (
+      <p>No initiatives available.</p>
+    )}
+  </div>
+);
 
-/* Scoreboard Header */
-const ScoreboardHeader = ({ currentEntity }) => {
-  return (
-    <div className='scoreboard-header'>
-      <h1 className='barlow-semibold'>COMMUNITY SCOREBOARD</h1>
-      <p className='barlow-semibold'>
-        Learn More about Evanston's Climate Wins!
-      </p>
-      <hr className='divider' />
-      <h2 className='barlow-semibold'>{currentEntity}</h2>
-    </div>
-  );
-};
+// Header
+const ScoreboardHeader = ({ program }) => (
+  <header className='scoreboard-header'>
+    <h1 className='barlow-semibold'>COMMUNITY SCOREBOARD</h1>
+    <p className='barlow-semibold'>Learn More about Evanston's Climate Wins!</p>
+    <hr className='divider' />
+    <h2 className='barlow-semibold'>{program.toUpperCase()}</h2>
+  </header>
+);
 
-/* Scoreboard Component */
-function Scoreboard() {
+// Main Component
+const Scoreboard = () => {
+  const [currentProgram, setCurrentProgram] = useState('Edible Evanston');
   const [initiatives, setInitiatives] = useState([]);
-  const [currentEntity, setCurrentEntity] = useState('EDIBLE EVANSTON'); // Default entity
 
-  useEffect(() => {
-    fetchInitiatives(entityQueryMap[currentEntity]);
-  }, []);
-
-  const fetchInitiatives = async (entityParam) => {
+  const fetchInitiatives = useCallback(async (programName) => {
     try {
       const response = await fetch(
-        `http://localhost:5050/cae/fetch-scoreboard?entity=${encodeURIComponent(entityParam)}`
+        `http://localhost:5050/cae/fetch-scoreboard?programName=${encodeURIComponent(programName)}`
       );
       if (!response.ok) throw new Error('Failed to fetch');
       const data = await response.json();
-      setInitiatives(data || []);
+      setInitiatives(data.initiatives || []);
     } catch (error) {
-      console.error('Error fetching initiatives:', entityParam, error);
+      console.error('Error fetching initiatives for', programName, error);
       setInitiatives([]);
     }
+  }, []);
+
+  useEffect(() => {
+    fetchInitiatives(currentProgram);
+  }, [currentProgram, fetchInitiatives]);
+
+  const handleProgramSelect = (program) => {
+    setCurrentProgram(program);
   };
 
   return (
-    <div className='scoreboard-page'>
-      <ScoreboardHeader currentEntity={currentEntity} />
+    <main className='scoreboard-page'>
+      <ScoreboardHeader program={currentProgram} />
       <div className='scoreboard-container'>
         <Sidebar
-          fetchInitiatives={fetchInitiatives}
-          setCurrentEntity={setCurrentEntity}
+          onSelect={handleProgramSelect}
+          activeProgram={currentProgram}
         />
-        <InitiativesGrid initiatives={initiatives} />
+        <InitiativesGrid initiatives={initiatives} program={currentProgram} />
       </div>
-    </div>
+    </main>
   );
-}
+};
 
 export default Scoreboard;

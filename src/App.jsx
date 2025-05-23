@@ -14,11 +14,10 @@ import RequestPasswordReset from 'pages/account/RequestPasswordReset';
 import ResetPassword from 'pages/account/ResetPassword';
 import SignUp from 'pages/account/SignUp';
 import Form from 'pages/cae-form/Form';
-import EditInitiative from 'pages/cae-form/EditInitiative';
-import AddInitiative from 'pages/cae-form/AddInitiative';
 import Home from 'pages/home/Home';
 import NotFound from 'pages/not-found/NotFound';
 import Scoreboard from 'pages/scoreboard/Scoreboard';
+import InitiativePage from 'pages/initiative-display/initiative';
 
 import './App.css';
 
@@ -30,12 +29,9 @@ export default function App() {
           <Route path='/' element={<NavLayout />}>
             <Route element={<PrivateRoute />}>
               <Route index element={<Home />} />
-              <Route index element={<Scoreboard />} />
               <Route path='form' element={<Form />} />
-              <Route path='create-initiative' element={<Form />} />
-              <Route path='create-initiative/add' element={<AddInitiative />} />
-              <Route path='edit-initiative/:program/:initiative' element={<EditInitiative />} />
-
+              <Route path='scoreboard' element={<Scoreboard />} />
+              <Route path='initiative/:programNameParam/:initiativeNameParam' element={<InitiativePage />} />
             </Route>
             <Route element={<PublicOnlyRoute />}>
               <Route path='login' element={<Login />} />

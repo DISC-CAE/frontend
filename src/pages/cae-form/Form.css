@@ -1,225 +1,372 @@
-.Form--container{
-  /* background-color: #E95d0c; */
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f5f7e6;
-    padding: 20px;
-}
-.ProgramInitiativeForm {
-  background: #fff;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-  max-width: 400px;
-  width: 100%;
+.initiative-form-manager {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 30px;
+  font-family: "Barlow Semi Condensed", sans-serif;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 20px;
 }
 
-.FormLabel {
-  font-weight: 500;
-  margin-bottom: 0.25rem;
+.initiative-form-manager h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0;
+  /* text-align: left; */
 }
 
-.FormInput {
+.initiative-form-manager label {
+  font-weight: 600;
+  margin-right: 20px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.initiative-form-manager input[type="radio"] {
+  margin-right: 8px;
+}
+
+
+.initiative-form-manager select,
+.initiative-form-manager input[type="password"] {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  /* width: 100%; */
+}
+
+.initiative-form-manager button {
+  background-color: #E95D0C;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background: #f8f8f8;
+  transition: background-color 0.2s ease;
+}
+
+.initiative-form-manager button.next-button {
+  background-color: #E95D0C;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 70px;
+  cursor: pointer;
+  width: 80px;
+  transition: background-color 0.2s ease;
+}
+
+.initiative-form-manager button:hover {
+  background-color: #cf4e08;
+}
+
+.initiative-form-manager .mode-selector {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 10px;
+}
+
+.initiative-form-manager .field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dropdown-label {
+  font-weight: 600;
+  margin-bottom: 6px;
   font-size: 1rem;
 }
 
-.custom-dropdown {
+.dropdown-container {
   position: relative;
+  margin-bottom: 8px;
 }
 
 .dropdown-selected {
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background: #f8f8f8;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1.5px solid #ddd;
+  background: #f7f7f0;
+  font-weight: 600;
+  font-size: 1.1rem;
   cursor: pointer;
+  user-select: none;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
   display: flex;
-  justify-content: space-between;
   align-items: center;
-}
-
-.dropdown-arrow {
-  margin-left: 1rem;
+  justify-content: space-between;
   color: #888;
+  transition: border 0.2s;
+  width: 80%;
+  box-sizing: border-box;
+  font-family: inherit;
 }
 
-.dropdown-menu {
+.dropdown-selected.selected {
+  color: #bbb;
+}
+
+.dropdown-selected.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.dropdown-list {
   position: absolute;
   top: 110%;
   left: 0;
   right: 0;
   background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 0 0 8px 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  border: 1.5px solid #eee;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   z-index: 10;
+  margin-top: 2px;
 }
 
 .dropdown-item {
-  padding: 0.75rem;
+  padding: 12px 16px;
   cursor: pointer;
+  color: #222;
+  font-weight: 500;
+  border-bottom: 1px solid #f2f2f2;
+  background: #fff;
+  transition: background 0.15s;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
 }
 
 .dropdown-item:hover {
-  background: #f5f5f5;
+  background: #f7f7f0;
 }
 
-.add-initiative {
-  background: #FBE9DB;
-  border-top: 1px solid #ddd;
-}
-
-.FormButton {
-  background: #c05c2b;
-  color: white;
-  padding: 0.75rem 0;
-  font-size: 1.1rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 0.5rem;
-  transition: background 0.2s;
-}
-
-.FormButton:hover {
-  background: #a14d20;
-}
-
-.add-metric-btn {
-  background: none;
-  border: none;
-  color: #c05c2b;
-  font-size: 1.4rem;
-  cursor: pointer;
-  margin-left: 0.5rem;
-  margin-bottom: 0.5rem;
-  transition: color 0.2s;
-}
-.add-metric-btn:hover {
-  color: #a14d20;
-}
-.upload-btn {
-  display: block;
-  margin: 0.5rem 0 0.25rem 0;
-  background: #c05c2b;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 0.4rem 1rem;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: background 0.2s;
-  width: fit-content;
-}
-
-.upload-btn:hover {
-  background: #a14d20;
-}
-
-.submit-btn {
-  display: block;
-  margin: 2rem auto 0 auto;
-  background: #c05c2b;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 0.6rem 2.2rem;
-  font-size: 1.05rem;
-  cursor: pointer;
-  transition: background 0.2s;
-  width: fit-content;
-}
-
-.submit-btn:hover {
-  background: #a14d20;
-=======
-/* Form.css */
-
-#form-bg {
+.dropdown-item.add {
+  color: #a35a00;
+  font-weight: 700;
+  background: #f8ede6;
   display: flex;
-  justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background-color: #EEF0E4;
-  padding: 20px;
+  gap: 8px;
 }
 
-.form-container {
-  background: #EEF0E4;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  width: 100%;
+.password-label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 1rem;
 }
 
-h2 {
+.password-input {
+  padding: 14px 16px;
+  font-size: 1.1rem;
+  border: 1.5px solid #ddd;
+  border-radius: 10px;
+  width: 80%;
+  box-sizing: border-box;
+  font-family: inherit;
+  background: #f7f7f0;
+  font-weight: 600;
+  color: #222;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: border 0.2s;
+}
+
+.flex-col-gap24 {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.initiative-form {
+  background: transparent;
+  padding: 0;
+  border: none;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: "Barlow Semi Condensed", sans-serif;
+}
+
+.initiative-form-title {
   text-align: center;
-  color: #2c3e50;
-  margin-bottom: 20px;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  text-decoration: underline;
 }
 
-.form-col {
+.initiative-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.initiative-form-left,
+.initiative-form-right {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: 24px;
 }
 
-label {
-  font-weight: bold;
-  color: #34495e;
+.initiative-form-group {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 8px;
 }
 
-input, textarea {
+.initiative-form-label {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 2px;
+}
+
+.initiative-form-input,
+.initiative-form-textarea {
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1.5px solid #ddd;
+  background: #f7f7f0;
+  font-size: 1.1rem;
+  font-family: inherit;
+  font-weight: 500;
+  color: #222;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: border 0.2s;
   width: 100%;
-  padding: 10px;
-  border: 1px solid #EEF0E4;
-  border-radius: 6px;
-  font-size: 16px;
-  transition: border 0.3s ease-in-out;
+  box-sizing: border-box;
 }
 
-input:focus, textarea:focus {
-  border-color: #EEF0E4;
+.initiative-form-input:focus,
+.initiative-form-textarea:focus {
   outline: none;
+  border-color: #E95D0C;
 }
 
-textarea {
-  min-height: 100px;
+.initiative-form-textarea {
+  min-height: 90px;
   resize: vertical;
 }
 
-button {
-  width: 100%;
-  padding: 12px;
-  background-color: #3498db;
-  color: white;
-  font-size: 16px;
-  border: none;
-  border-radius: 6px;
+.initiative-form-checkbox-group {
+  display: flex;
+  gap: 24px;
+  margin-top: 4px;
+}
+
+.initiative-form-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.3s ease-in-out;
+  position: relative;
 }
 
-button:hover {
-  background-color: #2980b9;
+.initiative-form-checkbox-label input[type="checkbox"] {
+  accent-color: #E95D0C;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+
+.initiative-form-metrics-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
+.initiative-form-metrics-divider {
+  flex: 1;
+  border: none;
+  border-top: 2px solid #222;
+  margin: 0;
+}
+
+.initiative-form-metric-group {
+  margin-bottom: 18px;
+}
+
+.initiative-form-metric-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 6px;
 }
 
 
-.cae-submit{
-  background-color: #e95d0c;
+.initiative-form-metric-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.metric-value-input {
+  max-width: 120px;
+}
+.metric-label-input {
+  flex: 1;
+}
+
+.initiative-form-metric-remove {
+  background: none;
+  border: none;
+  color: #E95D0C;
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0 8px;
+  /* border-radius: 50%; */
+  transition: background 0.15s;
+}
+.initiative-form-metric-remove:hover {
+  background: #f8ede6;
+}
+
+.initiative-form-submit-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.initiative-form-submit {
+  background-color: #E95D0C;
+  color: white;
+  border: none;
+  padding: 14px 36px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  /* border-radius: 20px; */
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  transition: background 0.2s;
+}
+.initiative-form-submit:hover {
+  background-color: #cf4e08;
+}
+
+@media (max-width: 900px) {
+  .initiative-form-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .initiative-form-left, .initiative-form-right {
+    gap: 18px;
+  }
+  .initiative-form-metrics-header {
+    margin-top: 24px;
+  }
 }
