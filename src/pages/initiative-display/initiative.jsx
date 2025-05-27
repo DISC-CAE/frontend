@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import default_image from '../../assets/default_image.png';
 import './initiative.css';
@@ -67,7 +66,7 @@ const InitiativePage = () => {
                 ))}
               </ul>
               <img
-                src={initiative.imageURL || default_image}
+                src={initiative.imageUrl || default_image}
                 alt={initiative.initiativeName || 'Initiative Image'}
                 className='initiative-image'
               />
@@ -87,17 +86,30 @@ const InitiativePage = () => {
                   {['People', 'Policy', 'Place'].map((section) => (
                     <div className='ppl-policy-place' key={section}>
                       <h4>{section}</h4>
-                      <ul className={`${section.toLowerCase()}-list`}>
-                        {initiative.metrics[section]?.length > 0 ? (
-                          initiative.metrics[section].map((item, idx) => (
-                            <li key={idx}>
-                              {item.label}: {item.value}
-                            </li>
-                          ))
-                        ) : (
-                          <li>No data available</li>
-                        )}
-                      </ul>
+                      {initiative.metrics[section]?.filter(
+                        (item) => item.showInScoreboard !== false
+                      ).length > 0 ? (
+                        <div className='metrics-list'>
+                          {initiative.metrics[section]
+                            .filter((item) => item.showInScoreboard !== false)
+                            .map((item, idx) => (
+                              <div key={idx} className='metric-item'>
+                                <span className='metric-label'>
+                                  {item.label}
+                                </span>
+                                <span className='metric-total'>
+                                  {item.values?.reduce(
+                                    (sum, entry) =>
+                                      sum + (parseInt(entry.value) || 0),
+                                    0
+                                  ) || 0}
+                                </span>
+                              </div>
+                            ))}
+                        </div>
+                      ) : (
+                        <p className='no-data'>No data available</p>
+                      )}
                     </div>
                   ))}
                 </>

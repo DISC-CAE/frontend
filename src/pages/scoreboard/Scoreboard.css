@@ -77,7 +77,6 @@ body {
   max-height: 350px;      
   height: auto;            
   overflow: hidden;        
-
 }
 
 .card:hover {
@@ -128,8 +127,6 @@ h1 {
   font-size: 2.8rem;
   margin: 0;
 }
-
-
 
 p {
   font-size: 1.3rem;

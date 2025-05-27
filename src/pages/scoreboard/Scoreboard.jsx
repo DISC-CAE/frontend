@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
 import './Scoreboard.css';
 
 // Available program names
@@ -36,13 +37,19 @@ const InitiativesGrid = ({ initiatives, program }) => (
   <div className='grid-container'>
     {initiatives.length ? (
       initiatives.map(({ name, description, imageUrl }) => (
-        <Link to={`/initiative/${encodeURIComponent(program)}/${encodeURIComponent(name)}`} key={name} className="card-link">
-        <div className='card'>
-          <div className='card-header barlow-semibold'>{name}</div>
-          <div className='card-content'>{description}</div>
-          {imageUrl && <img src={imageUrl} alt={name} className='card-image' />}
-        </div>
-      </Link>
+        <Link
+          to={`/initiative/${encodeURIComponent(program)}/${encodeURIComponent(name)}`}
+          key={name}
+          className='card-link'
+        >
+          <div className='card'>
+            <div className='card-header barlow-semibold'>{name}</div>
+            <div className='card-content'>{description}</div>
+            {imageUrl && (
+              <img src={imageUrl} alt={name} className='card-image' />
+            )}
+          </div>
+        </Link>
       ))
     ) : (
       <p>No initiatives available.</p>

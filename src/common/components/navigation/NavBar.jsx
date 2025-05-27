@@ -7,8 +7,6 @@ import styled from 'styled-components';
 import { Button } from 'common/components/Button';
 import { useUser } from 'common/contexts/UserContext';
 
-import LogoutModal from './LogoutModal';
-
 const StyledNav = styled.nav`
   display: flex;
   gap: 10px;
@@ -96,24 +94,6 @@ export default function NavBar() {
       <Scoreboard onClick={() => navigate('/scoreboard')}>
         Scoreboard
       </Scoreboard>
-
-      {user ? (
-        <Button.Secondary onClick={handleLogoutClick}>Log Out</Button.Secondary>
-      ) : (
-        <>
-          <Button.Primary onClick={() => navigate('/signup')}>
-            Sign Up
-          </Button.Primary>
-          <Button.Secondary onClick={() => navigate('/login')}>
-            Login
-          </Button.Secondary>
-        </>
-      )}
-      <LogoutModal
-        isOpen={isModalOpen}
-        onClose={handleModalClose}
-        onLogout={handleLogoutConfirm}
-      />
     </StyledNav>
   );
 }
