@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import logo from 'assets/cae_logo.png';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Button } from 'common/components/Button';
-import { useUser } from 'common/contexts/UserContext';
 
 const StyledNav = styled.nav`
   display: flex;
@@ -61,27 +60,7 @@ const Data = styled(Button.Invisible)`
 `;
 
 export default function NavBar() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
-  const { user, logout } = useUser();
-
-  const handleLogoutClick = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleLogoutConfirm = async () => {
-    try {
-      await logout();
-      setIsModalOpen(false);
-      navigate('/', { replace: true });
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-  };
 
   return (
     <StyledNav>
