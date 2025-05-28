@@ -75,12 +75,6 @@ const InitiativeForm = ({ mode, programName, initialData, authToken }) => {
     });
   };
 
-  const handleMetricChange = (category, index, field, value) => {
-    const updated = [...form.metrics[category]];
-    updated[index] = { ...updated[index], [field]: value };
-    setForm({ ...form, metrics: { ...form.metrics, [category]: updated } });
-  };
-
   const addMetric = (category) => {
     setForm({
       ...form,
