@@ -29,6 +29,7 @@ body {
 .sidebar-container {
   width: 250px;
   flex-shrink: 0;
+  margin-top: 40px;
 }
 
 .sidebar-item:hover,

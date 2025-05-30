@@ -10,7 +10,6 @@ body {
   width: 250px;
   min-height: 100vh;
   padding: 30px 20px;
-  /* background: #111; */
 }
 
 .sidebar-list {
@@ -57,7 +56,6 @@ body {
   justify-content: flex-start;
   gap: 20px;
   flex-grow: 1;
-  margin-top: 20px;
   min-height: 0;
 }
 
@@ -69,6 +67,7 @@ body {
   padding: 10px;
   flex-grow: 1;
   overflow-y: auto;
+  max-width: 350px;
   max-height: 100%;
 }
 
