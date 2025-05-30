@@ -17,7 +17,7 @@ const PROGRAMS = [
 
 // Sidebar Navigation
 const Sidebar = ({ onSelect, activeProgram }) => (
-  <aside className='sidebar-container'>
+  <aside className='sidebar-container1'>
     <ul className='sidebar-list'>
       {PROGRAMS.map((program) => (
         <li key={program}>

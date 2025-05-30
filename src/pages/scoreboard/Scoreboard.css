@@ -9,7 +9,7 @@ body {
 .sidebar-container {
   width: 250px;
   min-height: 100vh;
-  padding: 30px 20px;
+  padding: 0 20px;
 }
 
 .sidebar-list {
