@@ -39,7 +39,7 @@ const InitiativePage = () => {
     <div className='initiative-page'>
       <div className="initiative-layout">
         <button className="back-button" onClick={() => navigate('/scoreboard')}>
-          ◀ Back to Scoreboard
+          ◀ Move to Scoreboard
         </button>
         <div className='column2-initiative-display'>
           <div className='initiative-title'>{initiative.initiativeName}</div>{' '}
