@@ -5,6 +5,34 @@ import { useNavigate, useParams } from 'react-router-dom';
 import default_image from '../../assets/default_image.png';
 import './initiative.css';
 
+// Available program names
+const PROGRAMS = [
+  'Beyond Waste',
+  'Edible Evanston',
+  'Energy',
+  'Environmental Justice',
+  'Natural Habitat',
+  'Climate Action',
+];
+
+// Sidebar Navigation
+const Sidebar = ({ onSelect, activeProgram }) => (
+  <aside className='sidebar-container'>
+    <ul className='sidebar-list'>
+      {PROGRAMS.map((program) => (
+        <li key={program}>
+          <button
+            className={`sidebar-item barlow-semibold ${program === activeProgram ? 'active' : ''}`}
+            onClick={() => onSelect(program)}
+          >
+            {program.toUpperCase()}
+          </button>
+        </li>
+      ))}
+    </ul>
+  </aside>
+);
+
 /* Main Initiatives Display */
 const InitiativePage = () => {
   const [initiative, setInitiative] = useState([]);
@@ -29,6 +57,10 @@ const InitiativePage = () => {
     }
   };
 
+  const handleProgramSelect = (program) => {
+    navigate('/scoreboard');
+  };
+
   useEffect(() => {
     if (!programNameParam || !initiativeNameParam) return;
 
@@ -39,13 +71,15 @@ const InitiativePage = () => {
   }, [programNameParam, initiativeNameParam]);
 
   return (
-    <div className='initiative-page'>
+    <main className='initiative-page'>
+      <div className='header-spacer'></div>
       <div className='initiative-layout'>
-        <button className='back-button' onClick={() => navigate('/scoreboard')}>
-          ◀ Back to Scoreboard
-        </button>
+        <Sidebar
+          onSelect={handleProgramSelect}
+          activeProgram={programNameParam}
+        />
         <div className='column2-initiative-display'>
-          <div className='initiative-title'>{initiative.initiativeName}</div>{' '}
+          <div className='initiative-title'>{initiative.initiativeName}</div>
           <div className='initiative-container'>
             <div className='column action-mode'>
               {' '}
@@ -83,35 +117,37 @@ const InitiativePage = () => {
               {initiative?.metrics ? (
                 <>
                   <h3>Metrics</h3>
-                  {['People', 'Policy', 'Place'].map((section) => (
-                    <div className='ppl-policy-place' key={section}>
-                      <h4>{section}</h4>
-                      {initiative.metrics[section]?.filter(
+                  {['People', 'Policy', 'Place'].map((section) => {
+                    // Only show section if it has metrics with showInScoreboard !== false
+                    const availableMetrics =
+                      initiative.metrics[section]?.filter(
                         (item) => item.showInScoreboard !== false
-                      ).length > 0 ? (
+                      ) || [];
+
+                    if (availableMetrics.length === 0) {
+                      return null; // Don't render this section at all
+                    }
+
+                    return (
+                      <div className='ppl-policy-place' key={section}>
+                        <h4>{section}</h4>
                         <div className='metrics-list'>
-                          {initiative.metrics[section]
-                            .filter((item) => item.showInScoreboard !== false)
-                            .map((item, idx) => (
-                              <div key={idx} className='metric-item'>
-                                <span className='metric-label'>
-                                  {item.label}
-                                </span>
-                                <span className='metric-total'>
-                                  {item.values?.reduce(
-                                    (sum, entry) =>
-                                      sum + (parseInt(entry.value) || 0),
-                                    0
-                                  ) || 0}
-                                </span>
-                              </div>
-                            ))}
+                          {availableMetrics.map((item, idx) => (
+                            <div key={idx} className='metric-item'>
+                              <span className='metric-label'>{item.label}</span>
+                              <span className='metric-total'>
+                                {item.values?.reduce(
+                                  (sum, entry) =>
+                                    sum + (parseInt(entry.value) || 0),
+                                  0
+                                ) || 0}
+                              </span>
+                            </div>
+                          ))}
                         </div>
-                      ) : (
-                        <p className='no-data'>No data available</p>
-                      )}
-                    </div>
-                  ))}
+                      </div>
+                    );
+                  })}
                 </>
               ) : (
                 <p>Loading metrics...</p>
@@ -121,7 +157,7 @@ const InitiativePage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

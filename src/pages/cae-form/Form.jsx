@@ -67,16 +67,19 @@ const Form = () => {
   const handleNext = async () => {
     try {
       // Use the selected program's ID and password
-      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/program-login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          programId: getProgramIdByName(programName),
-          password: password,
-        }),
-      });
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/auth/program-login`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            programId: getProgramIdByName(programName),
+            password: password,
+          }),
+        }
+      );
 
       const data = await res.json();
       if (!data.success) throw new Error(data.error);
