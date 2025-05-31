@@ -1,7 +1,7 @@
 /* Reset & Global */
 body {
   margin: 0;
-  font-family: "Barlow Semi Condensed", sans-serif;
+  font-family: var(--font-primary);
   background: #EEF0E4;
 }
 
@@ -9,8 +9,7 @@ body {
 .sidebar-container {
   width: 250px;
   min-height: 100vh;
-  padding: 30px 20px;
-  /* background: #111; */
+  padding: 0 20px;
 }
 
 .sidebar-list {
@@ -22,9 +21,11 @@ body {
 .sidebar-item {
   display: block;
   padding: 16px 18px;
-  background: black;
-  color: white;
+  background: var(--neutral-black);
+  color: var(--neutral-white);
   font-size: 1.1rem;
+  font-family: var(--font-primary);
+  font-weight: var(--font-bold);
   border-radius: 6px;
   margin-bottom: 10px;
   text-align: left;
@@ -37,7 +38,7 @@ body {
 
 .sidebar-item:hover,
 .sidebar-item.active {
-  background: #E95D0C;
+  background: var(--primary-orange);
 }
 
 /* Scoreboard Layout */
@@ -46,6 +47,8 @@ body {
   flex-direction: column;
   padding: 20px;
   text-align: center;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .scoreboard-container {
@@ -53,87 +56,146 @@ body {
   justify-content: flex-start;
   gap: 20px;
   flex-grow: 1;
-  margin-top: 20px;
+  min-height: 0;
 }
 
 /* Initiatives Grid */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 20px;
   padding: 10px;
   flex-grow: 1;
+  overflow-y: auto;
+  max-width: 350px;
+  max-height: 100%;
 }
 
 .card {
-  background: white;
-  border: 2px solid black;
-  padding: 15px;
+  background: var(--neutral-white);
+  border: 2px solid var(--neutral-black);
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   border-radius: 6px;
   transition: box-shadow 0.2s;
-  max-height: 350px;      
-  height: auto;            
-  overflow: hidden;        
+  height: 300px;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
 }
 
 .card:hover {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.card-program-icon {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  z-index: 1;
+}
+
 .card-header {
-  font-weight: bold;
+  font-weight: var(--font-bold);
+  font-family: var(--font-primary);
   font-size: 1.4rem;
   margin-bottom: 10px;
   text-align: center;
+  flex-shrink: 0;
+  width: 100%;
+  color: var(--neutral-black);
 }
 
 .card-content {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  text-align: center;
+  flex-direction: row;
+  gap: 15px;
+  text-align: left;
   font-size: 1rem;
-  margin-bottom: 10px;
+  font-family: var(--font-primary);
+  flex-grow: 1;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  align-items: center;
+}
+
+.card-description {
+  flex: 1;
+  min-width: 0;
+  padding-right: 10px;
+  color: var(--neutral-black);
 }
 
 .card-image {
-  max-width: 100%;
-  height: auto;
+  width: 140px;
+  height: 120px;
+  object-fit: cover;
   border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.card-arrow {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 1.5rem;
+  color: var(--secondary-grey);
+  pointer-events: none;
 }
 
 .card-link {
   text-decoration: none;
+  height: 100%;
+  display: flex;
+  width: 100%;
 }
 
 /* Header */
 .scoreboard-header {
   text-align: center;
+  flex-shrink: 0;
 }
 
 .divider {
   border: none;
   height: 2px;
-  background-color: #ccc;
+  background-color: var(--neutral-medium-grey);
   margin: 10px auto;
   max-width: 600px;
 }
 
 /* Fonts */
 h1 {
-  font-size: 2.8rem;
+  font-size: 2.2rem;
+  font-family: var(--font-primary);
+  font-weight: var(--font-black);
   margin: 0;
+  color: var(--neutral-black);
+}
+
+h2 {
+  font-family: var(--font-primary);
+  font-weight: var(--font-bold);
+  color: var(--primary-orange);
+  font-size: 1.8rem;
 }
 
 p {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
+  font-family: var(--font-primary);
   margin: 10px 0;
+  color: var(--neutral-black);
 }
 
 .barlow-semibold {
-  font-weight: 600;
+  font-weight: var(--font-bold);
   font-style: normal;
+  font-family: var(--font-primary);
 }

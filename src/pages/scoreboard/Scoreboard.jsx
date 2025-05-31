@@ -14,6 +14,19 @@ const PROGRAMS = [
   'Climate Action',
 ];
 
+// Function to get program icon filename
+const getProgramIcon = (programName) => {
+  const iconMap = {
+    'Beyond Waste': 'beyondwaste.png',
+    'Edible Evanston': 'edibleevanston.png',
+    Energy: 'energy.png',
+    'Environmental Justice': 'environmentjustice.png',
+    'Natural Habitat': 'naturalhabitat.png',
+    'Climate Action': 'climateaction.png', // assuming this exists or will be added
+  };
+  return iconMap[programName] || 'edibleevanston.png'; // fallback
+};
+
 // Sidebar Navigation
 const Sidebar = ({ onSelect, activeProgram }) => (
   <aside className='sidebar-container'>
@@ -43,11 +56,19 @@ const InitiativesGrid = ({ initiatives, program }) => (
           className='card-link'
         >
           <div className='card'>
+            <img
+              src={`/${getProgramIcon(program)}`}
+              alt={`${program} icon`}
+              className='card-program-icon'
+            />
             <div className='card-header barlow-semibold'>{name}</div>
-            <div className='card-content'>{description}</div>
-            {imageUrl && (
-              <img src={imageUrl} alt={name} className='card-image' />
-            )}
+            <div className='card-content'>
+              <div className='card-description'>{description}</div>
+              {imageUrl && (
+                <img src={imageUrl} alt={name} className='card-image' />
+              )}
+              <div className='card-arrow'>›</div>
+            </div>
           </div>
         </Link>
       ))
@@ -69,7 +90,7 @@ const ScoreboardHeader = ({ program }) => (
 
 // Main Component
 const Scoreboard = () => {
-  const [currentProgram, setCurrentProgram] = useState('Edible Evanston');
+  const [currentProgram, setCurrentProgram] = useState('Beyond Waste');
   const [initiatives, setInitiatives] = useState([]);
 
   const fetchInitiatives = useCallback(async (programName) => {
