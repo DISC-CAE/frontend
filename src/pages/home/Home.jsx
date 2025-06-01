@@ -7,25 +7,45 @@ const Home = () => {
     <div className='home-container'>
       <div className='icons-container'>
         <div className='icon-item'>
-          <a href='/beyond-waste-placeholder'>
+          <a
+          href="https://www.climateactionevanston.org/waste/home"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="icon-item"
+          >
             <img src='/beyondwaste.png' alt='Beyond Waste' />
           </a>
           <p>Beyond Waste</p>
         </div>
         <div className='icon-item'>
-          <a href='/edible-evanston-placeholder'>
+          <a
+            href="https://www.climateactionevanston.org/food/home"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="icon-item"
+          >
             <img src='/edibleevanston.png' alt='Edible Evanston' />
           </a>
           <p>Edible Evanston</p>
         </div>
         <div className='icon-item'>
-          <a href='/energy-placeholder'>
+          <a
+            href="https://www.climateactionevanston.org/energy/home"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="icon-item"
+          >
             <img src='/energy.png' alt='Energy' />
           </a>
           <p>Energy</p>
         </div>
         <div className='icon-item'>
-          <a href='/environmental-justice-placeholder'>
+          <a
+            href="https://www.climateactionevanston.org/environmental-justice/home"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="icon-item"
+          >
             <img
               src='/environmentjustice.png'
               alt='Environmental Justice Evanston'
@@ -36,7 +56,12 @@ const Home = () => {
           </p>
         </div>
         <div className='icon-item'>
-          <a href='/natural-habitat-placeholder'>
+          <a
+            href="https://www.climateactionevanston.org/natural-habitat/home"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="icon-item"
+          >
             <img src='/naturalhabitat.png' alt='Natural Habitat Evanston' />
           </a>
           <p>
